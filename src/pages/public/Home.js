@@ -1,15 +1,8 @@
-import React, { useEffect } from 'react'
-import { Header, Banner, Navigation, Sidebar } from '../../components'
-import { apiGetProducts } from './../../apis/product';
+import React from 'react'
+import { Banner, Sidebar, BestSeller } from '../../components'
+
 
 const Home = () => {
-    const fetchProducts = async () => {
-        const res = await apiGetProducts()
-        console.log(res)
-    }
-    useEffect(() => {
-        fetchProducts()
-    }, [])
     return (
         <div className='w-main flex'>
             <div className='w-[25%] flex flex-auto flex-col gap-5 '>
@@ -18,7 +11,7 @@ const Home = () => {
             </div>
             <div className='w-[75%] flex flex-auto flex-col gap-5 pl-5 '>
                 <Banner />
-                <span>Best Seller</span>
+                <BestSeller />
             </div>
         </div>
     )
