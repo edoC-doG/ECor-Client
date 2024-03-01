@@ -3,9 +3,9 @@ import React from 'react'
 const Banner = () => {
     return (
         <div>
-            <img src="https://digital-world-2.myshopify.com/cdn/shop/files/slideshow3-home2_1920x.jpg?v=1613166679"
+            <img src="https://file.hstatic.net/200000722513/file/sam_tet_-_slider__1__d8239933b18c4f1dbaff1349b0a291e1.png"
                 alt="banner"
-                className='w-full object-contain'
+                className='h-[400px] w-full object-cover'
             />
         </div>
     )

@@ -2,12 +2,10 @@ import React from 'react'
 import { navigation } from '../utils/contants'
 import { NavLink } from 'react-router-dom'
 
-const notActivedStyle = ''
-const activedStyle = ''
 
 const Navigation = () => {
     return (
-        <div className='w-main flex items-center h-[48px] py-2 border text-sm'>
+        <div className='w-main flex items-center h-[48px] mb-6 py-2 border-y text-sm'>
             {navigation.map(el => (
                 <NavLink
                     to={el.path}
