@@ -27,6 +27,7 @@ const BestSeller = () => {
     const [bestSeller, setBestSeller] = useState(null)
     const [newProducts, setNewProducts] = useState(null)
     const [activeTab, setActiveTab] = useState(1)
+    const [product, setProducts] = useState(null)
     const fetchProducts = async () => {
         const res = await Promise.all([apiGetProducts({ sort: '-sold' }), apiGetCategories({ sort: '-createdAt' })])
         if (res[0]?.success) setBestSeller(res[0].products)
@@ -48,7 +49,7 @@ const BestSeller = () => {
                     </span>
                 ))}
             </div>
-            <div className='mt-4'>
+            <div className='mt-4 mx-[-10px]'>
                 <Slider {...settings}>
                     {bestSeller?.map(el => (
                         <ProductItem
