@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { apiGetProducts } from './../apis/product';
 import { apiGetCategories } from './../apis/app';
-import Slider from "react-slick"
-import ProductItem from './ProductItem';
+import CustomSlider from './CustomSlider';
 
 const tabs = [
     {
@@ -14,14 +13,6 @@ const tabs = [
         name: 'New Arrivals'
     },
 ]
-
-const settings = {
-    dots: true,
-    isFinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-}
 
 const BestSeller = () => {
     const [bestSeller, setBestSeller] = useState(null)
@@ -61,15 +52,19 @@ const BestSeller = () => {
                 ))}
             </div>
             <div className='mt-4 mx-[-10px] border-b-2 border-main pt-4'>
-                <Slider {...settings}>
-                    {products?.map(el => (
-                        <ProductItem
-                            key={el.id}
-                            productData={el}
-                            isNew={activeTab === 1 ? false : true}
-                        />
-                    ))}
-                </Slider>
+                <CustomSlider products={products} activeTab={activeTab} />
+            </div>
+            <div className='w-full flex gap-4 mt-8'>
+                <img
+                    src="https://digital-world-2.myshopify.com/cdn/shop/files/banner2-home2_2000x_crop_center.png?v=1613166657"
+                    alt=""
+                    className='flex-1 object-contain'
+                />
+                <img
+                    src="https://digital-world-2.myshopify.com/cdn/shop/files/banner1-home2_2000x_crop_center.png?v=1613166657"
+                    alt=""
+                    className='flex-1 object-contain'
+                />
             </div>
         </div>
     )
