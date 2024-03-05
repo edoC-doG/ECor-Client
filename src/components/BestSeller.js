@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { apiGetProducts } from './../apis/product';
 import { apiGetCategories } from './../apis/app';
 import CustomSlider from './CustomSlider';
+import { getNewProducts } from './../store/products/asyncAction';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const tabs = [
     {
@@ -16,20 +19,20 @@ const tabs = [
 
 const BestSeller = () => {
     const [bestSeller, setBestSeller] = useState(null)
-    const [newProducts, setNewProducts] = useState(null)
     const [activeTab, setActiveTab] = useState(1)
     const [products, setProducts] = useState(null)
+    const dispatch = useDispatch()
+    const { newProducts } = useSelector(state => state.products)
     const fetchProducts = async () => {
-        const res = await Promise.all([apiGetProducts({ sort: '-sold' }), apiGetCategories({ sort: '-createdAt' })])
-        if (res[0]?.success) {
-            setBestSeller(res[0].products)
-            setProducts(res[0].products)
+        const res = await apiGetProducts({ sort: '-sold' })
+        if (res?.success) {
+            setBestSeller(res.products)
+            setProducts(res.products)
         }
-        if (res[1]?.success) setNewProducts(res[1].products)
-        setProducts(res[0].products)
     }
     // useEffect(() => {
-    //     fetchProducts()
+    //      fetchProducts()
+    //      dispatch(getNewProducts())
     // }, [])
     useEffect(() => {
         if (activeTab === 1) {
