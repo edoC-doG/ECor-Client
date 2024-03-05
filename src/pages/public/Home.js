@@ -1,5 +1,5 @@
 import React from 'react'
-import { Banner, Sidebar, BestSeller, DealDaily, FeatureProduct, CustomSlider } from '../../components'
+import { Banner, Sidebar, BestSeller, DealDaily, FeatureProduct, CustomSlider, Footer } from '../../components'
 import { useSelector } from 'react-redux';
 import icons from '../../utils/icons';
 
@@ -38,9 +38,9 @@ const Home = () => {
                     Hot collections
                 </h3>
                 <div className='flex flex-wrap gap-4 mt-4'>
-                    {categories?.filter(el => el.brand.length > 0)?.map(el => (
+                    {categories?.filter(el => el.brand.length > 0)?.map((el, idx) => (
                         <div
-                            key={el._id}
+                            key={idx}
                             className='w-[396px] '
                         >
                             <div className='flex border p-4 gap-4  min-h-[190px]' >
@@ -52,13 +52,14 @@ const Home = () => {
                                 <div className='flex-1 text-gray-700'>
                                     <h4 className='font-semibold uppercase'>{el.title}</h4>
                                     <ul className='text-sm'>
-                                        {el?.brand?.map(item => (
+                                        {el?.brand?.map((item, idx) => (
                                             <span
+                                                key={idx}
                                                 className='flex gap-1 items-center text-gray-500'
                                             >
                                                 <IoIosArrowForward />
                                                 <li
-                                                    key={item}
+                                                    key={idx}
                                                 >
                                                     {item}
                                                 </li>
@@ -71,7 +72,6 @@ const Home = () => {
                     ))}
                 </div>
             </div>
-            <div className='w-full h-[500px]'></div>
         </>
     )
 }
