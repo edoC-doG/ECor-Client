@@ -11,7 +11,12 @@ const TopHeader = () => {
                 className='w-main flex items-center justify-between text-white text-xs'
             >
                 <span> ORDER ONLINE OR CALL US (+1800) 000 8808</span>
-                <Link to={path.LOGIN}>Sign in or Create Account</Link>
+                <Link
+                    className='hover:text-gray-800'
+                    to={path.LOGIN}
+                >
+                    Sign in or Create Account
+                </Link>
             </div>
         </div>
     )

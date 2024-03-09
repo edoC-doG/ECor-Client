@@ -1,5 +1,5 @@
 import React from 'react'
-import { Banner, Sidebar, BestSeller, DealDaily, FeatureProduct, CustomSlider, Footer } from '../../components'
+import { Banner, Sidebar, BestSeller, DealDaily, FeatureProduct, CustomSlider } from '../../components'
 import { useSelector } from 'react-redux';
 import icons from '../../utils/icons';
 

@@ -14,13 +14,13 @@ function App() {
       <Routes>
         <Route path={path.PUBLIC} element={<PublicPage />}>
           <Route path={path.HOME} element={<Home />} />
-          <Route path={path.LOGIN} element={<Login />} />
           <Route path={path.OUR_SERVICES} element={<Services />} />
           <Route path={path.FAQS} element={<FAQ />} />
           <Route path={path.BLOGS} element={<Blogs />} />
           <Route path={path.PRODUCTS} element={<ProductPage />} />
           <Route path={path.DETAIL_PRODUCT} element={<DetailProduct />} />
         </Route>
+        <Route path={path.LOGIN} element={<Login />} />
       </Routes>
     </div>
   );
