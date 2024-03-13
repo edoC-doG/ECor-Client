@@ -9,6 +9,8 @@ const path = {
     BLOGS: 'blogs',
     OUR_SERVICES: 'services',
     FAQS: 'faqs',
+    FINAL_REGISTER: 'final-register/:status',
+    RESET_PWD: 'reset-password/:token',
 }
 
 export default path

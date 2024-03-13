@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom'
 import path from './utils/path'
-import { Home, Login, PublicPage, FAQ, Services, Blogs, DetailProduct, ProductPage } from './pages/public'
+import { Home, Login, PublicPage, FAQ, Services, Blogs, DetailProduct, ProductPage, FinalRegister, ResetPwd } from './pages/public'
 import { getCategories } from './store/app/asyncAction';
 import { useDispatch } from 'react-redux'
 function App() {
@@ -20,7 +20,9 @@ function App() {
           <Route path={path.PRODUCTS} element={<ProductPage />} />
           <Route path={path.DETAIL_PRODUCT} element={<DetailProduct />} />
         </Route>
+        <Route path={path.RESET_PWD} element={<ResetPwd />} />
         <Route path={path.LOGIN} element={<Login />} />
+        <Route path={path.FINAL_REGISTER} element={<FinalRegister />} />
       </Routes>
     </div>
   );

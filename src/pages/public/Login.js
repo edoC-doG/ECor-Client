@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import login from '../../assets/login.jpg'
 import { Button, InputField } from '../../components'
-import { apiRegister, apiLogin } from '../../apis/user'
+import { apiRegister, apiLogin, apiForgotPwd } from '../../apis/user'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import path from '../../utils/path'
@@ -12,6 +12,8 @@ const Login = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [isRegister, setRegister] = useState(false)
+    const [isForgotPwD, setIsForgotPwD] = useState(false)
+    const [email, setEmail] = useState(null)
     const [payload, setPayload] = useState({
         email: '',
         password: '',
@@ -46,8 +48,31 @@ const Login = () => {
             } else Swal.fire('Oops!', rs.mes, 'error')
         }
     }, [payload, isRegister])
+    const handleForgotPwd = async () => {
+        const res = await apiForgotPwd({ email })
+        console.log(res)
+    }
     return (
         <div className='w-screen h-screen relative'>
+            <div className='absolute top-0 left-0 bottom-0 right-0 bg-white flex flex-col items-center py-8 z-50'>
+                <div className=' flex flex-col gap-4'>
+                    <label htmlFor="email">Enter your email:</label>
+                    <input
+                        type="text"
+                        id='email'
+                        className='w-[800px] pb-2 border-b outline-none placeholder:text-sm'
+                        placeholder='Exp: email@gmail.com'
+                        value={email || ""}
+                        onChange={e => setEmail(e.target.value)}
+                    />
+                    <div className='w-full flex items-center justify-end '>
+                        <Button
+                            name='submit'
+                            handleOnClick={handleForgotPwd}
+                        />
+                    </div>
+                </div>
+            </div>
             <img
                 src={login}
                 alt="Login Page"
