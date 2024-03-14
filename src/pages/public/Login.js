@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import path from '../../utils/path'
 import { registerV2 } from '../../store/user/userSlice'
 import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const navigate = useNavigate()
@@ -50,11 +51,13 @@ const Login = () => {
     }, [payload, isRegister])
     const handleForgotPwd = async () => {
         const res = await apiForgotPwd({ email })
-        console.log(res)
+        if (res.success) {
+            toast.success(res.mes)
+        } else toast.error(res.mes)
     }
     return (
         <div className='w-screen h-screen relative'>
-            <div className='absolute top-0 left-0 bottom-0 right-0 bg-white flex flex-col items-center py-8 z-50'>
+            {isForgotPwD && <div className='absolute top-0 left-0 bottom-0 right-0 animate-slide-right bg-white flex flex-col items-center py-8 z-50'>
                 <div className=' flex flex-col gap-4'>
                     <label htmlFor="email">Enter your email:</label>
                     <input
@@ -65,14 +68,19 @@ const Login = () => {
                         value={email || ""}
                         onChange={e => setEmail(e.target.value)}
                     />
-                    <div className='w-full flex items-center justify-end '>
+                    <div className='w-full flex items-center justify-end gap-4'>
                         <Button
-                            name='submit'
+                            name='Submit'
                             handleOnClick={handleForgotPwd}
+                            style='px-4 py-2 rounded-md text-white bg-blue-500 text-semibold my-2'
+                        />
+                        <Button
+                            name='Back'
+                            handleOnClick={() => setIsForgotPwD(false)}
                         />
                     </div>
                 </div>
-            </div>
+            </div>}
             <img
                 src={login}
                 alt="Login Page"
@@ -120,6 +128,7 @@ const Login = () => {
                     <div className='flex items-center justify-between mt-2 w-full text-sm'>
                         {!isRegister && <span
                             className='text-blue-500 hover:underline cursor-pointer'
+                            onClick={() => setIsForgotPwD(true)}
                         >
                             Forgot your account ?
                         </span>}
