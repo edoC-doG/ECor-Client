@@ -1,13 +1,14 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import login from '../../assets/login.jpg'
 import { Button, InputField } from '../../components'
-import { apiRegister, apiLogin, apiForgotPwd } from '../../apis/user'
+import { apiLogin, apiForgotPwd, apiFinalRegister, apiRegister } from '../../apis/user'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import path from '../../utils/path'
 import { registerV2 } from '../../store/user/userSlice'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify';
+import { validate } from '../../utils/helper'
 
 const Login = () => {
     const navigate = useNavigate()
@@ -15,6 +16,8 @@ const Login = () => {
     const [isRegister, setRegister] = useState(false)
     const [isForgotPwD, setIsForgotPwD] = useState(false)
     const [email, setEmail] = useState(null)
+    const [token, setToken] = useState('')
+    const [isVerifiedEmail, setisVerifiedEmail] = useState(false)
     const [payload, setPayload] = useState({
         email: '',
         password: '',
@@ -22,6 +25,7 @@ const Login = () => {
         firstName: '',
         lastName: ''
     })
+    const [invalidFields, setInvalidFields] = useState([])
     const resetPayload = () => {
         setPayload({
             email: '',
@@ -31,22 +35,25 @@ const Login = () => {
             lastName: ''
         })
     }
+    useEffect(() => {
+        resetPayload()
+    }, [isRegister])
     const handleSubmit = useCallback(async () => {
         const { firstName, lastName, mobile, ...data } = payload
-        if (isRegister) {
-            const res = await apiRegister(payload)
-            if (res.success) {
-                Swal.fire('Register Successfully ', res.mes, 'success').then(() => {
-                    setRegister(false)
-                    resetPayload()
-                })
-            } else Swal.fire('Oops!', res.mes, 'error')
-        } else {
-            const rs = await apiLogin(data)
-            if (rs.success) {
-                dispatch(registerV2({ isLoggedIn: true, userData: rs.userData, token: rs.accessToken }))
-                navigate(`/${path.HOME}`)
-            } else Swal.fire('Oops!', rs.mes, 'error')
+        const invalids = isRegister ? validate(payload, setInvalidFields) : validate(data, setInvalidFields)
+        if (invalids === 0) {
+            if (isRegister) {
+                const res = await apiRegister(payload)
+                if (res.success) {
+                    setisVerifiedEmail(true)
+                } else Swal.fire('Oops!', res.mes, 'error')
+            } else {
+                const rs = await apiLogin(data)
+                if (rs.success) {
+                    dispatch(registerV2({ isLoggedIn: true, userData: rs.userData, token: rs.accessToken }))
+                    navigate(`/${path.HOME}`)
+                } else Swal.fire('Oops!', rs.mes, 'error')
+            }
         }
     }, [payload, isRegister])
     const handleForgotPwd = async () => {
@@ -55,8 +62,38 @@ const Login = () => {
             toast.success(res.mes)
         } else toast.error(res.mes)
     }
+    const finalRegister = async () => {
+        const res = await apiFinalRegister(token)
+        if (res.success) {
+            Swal.fire('Congratulation !!!', res.mes, 'success').then(() => {
+                setRegister(false)
+                resetPayload()
+            })
+        } else Swal.fire('Oops!', res.mes, 'error')
+        setisVerifiedEmail(false)
+        setToken('')
+
+    }
     return (
         <div className='w-screen h-screen relative'>
+            {isVerifiedEmail && <div className='w-full flex flex-col items-center justify-center absolute  top-0 right-0 bottom-0 left-0 animate-slide-top bg-overlay z-50'>
+                <div className='bg-white w-[500px] rounded-md p-8'>
+                    <h4 className=''>
+                        We sent a code to your mail. Please check your mail and enter your code:
+                    </h4>
+                    <input
+                        value={token}
+                        onChange={e => setToken(e.target.value)}
+                        type="text"
+                        className='p-2 border rounded-md outline-none'
+                    />
+                    <Button
+                        name='Submit'
+                        handleOnClick={() => finalRegister()}
+                        style='px-4 py-2 rounded-md text-white bg-blue-500 text-semibold my-2 ml-4'
+                    />
+                </div>
+            </div>}
             {isForgotPwD && <div className='absolute top-0 left-0 bottom-0 right-0 animate-slide-right bg-white flex flex-col items-center py-8 z-50'>
                 <div className=' flex flex-col gap-4'>
                     <label htmlFor="email">Enter your email:</label>
@@ -95,17 +132,23 @@ const Login = () => {
                                 value={payload.lastName}
                                 setValue={setPayload}
                                 nameKey='lastName'
+                                invalidFields={invalidFields}
+                                setInvalidFields={setInvalidFields}
                             />
                             <InputField
                                 value={payload.firstName}
                                 setValue={setPayload}
                                 nameKey='firstName'
+                                invalidFields={invalidFields}
+                                setInvalidFields={setInvalidFields}
                             />
                         </div>
                         <InputField
                             value={payload.mobile}
                             setValue={setPayload}
                             nameKey='mobile'
+                            invalidFields={invalidFields}
+                            setInvalidFields={setInvalidFields}
                         />
                     </div>
                     }
@@ -113,12 +156,16 @@ const Login = () => {
                         value={payload.email}
                         setValue={setPayload}
                         nameKey='email'
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
                     />
                     <InputField
                         value={payload.password}
                         setValue={setPayload}
                         nameKey='password'
                         type='password'
+                        invalidFields={invalidFields}
+                        setInvalidFields={setInvalidFields}
                     />
                     <Button
                         fw

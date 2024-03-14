@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 const ResetPwd = () => {
     const [password, setPassword] = useState(null)
     const { token } = useParams()
-    console.log(token)
     const handleForgotPwd = async () => {
         const res = await apiResetPwd({ password, token })
         if (res.success) {
