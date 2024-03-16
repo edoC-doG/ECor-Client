@@ -3,7 +3,7 @@ import login from '../../assets/login.jpg'
 import { Button, InputField } from '../../components'
 import { apiLogin, apiForgotPwd, apiFinalRegister, apiRegister } from '../../apis/user'
 import Swal from 'sweetalert2'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import path from '../../utils/path'
 import { registerV2 } from '../../store/user/userSlice'
 import { useDispatch } from 'react-redux'
@@ -186,12 +186,18 @@ const Login = () => {
                             Create account ?
                         </span>}
                         {isRegister && <span
-                            className='w-full text  -center text-blue-500 hover:underline cursor-pointer '
+                            className='w-full text-center text-blue-500 hover:underline cursor-pointer '
                             onClick={() => setRegister(false)}
                         >
                             Go login
                         </span>}
                     </div>
+                    <Link
+                        className='w-full text-center text-blue-500 text-sm hover:underline cursor-pointer '
+                        to={`/${path.HOME}`}
+                    >
+                        Go Home ?
+                    </Link>
                 </div>
             </div>
         </div>
