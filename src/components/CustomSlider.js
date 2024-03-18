@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import Slider from "react-slick"
-import ProductItem from './ProductItem';
+import { ProductItem } from './';
 
 const settings = {
     dots: true,
@@ -9,17 +9,18 @@ const settings = {
     slidesToShow: 3,
     slidesToScroll: 1,
 }
-const CustomSlider = ({ products, activeTab }) => {
+const CustomSlider = ({ products, activeTab, normal }) => {
     return (
         <>
             {
-                products && <Slider {...settings}>
+                products && <Slider className='custom-slider' {...settings}>
                     {products?.map((el, idx) => (
                         <ProductItem
                             key={idx}
                             pid={el.id}
                             productData={el}
                             isNew={activeTab === 1 ? false : true}
+                            normal={normal}
                         />
                     ))}
                 </Slider>

@@ -9,7 +9,7 @@ import path from '../utils/path'
 
 const { AiFillEye, IoMenu, BsFillSuitHeartFill } = icons
 
-const ProductItem = ({ productData, isNew }) => {
+const ProductItem = ({ productData, isNew, normal }) => {
     const [isShowOption, setIsShowOption] = useState(false)
     return (
         <div className='w-full text-base border px-[10px]'>
@@ -36,12 +36,11 @@ const ProductItem = ({ productData, isNew }) => {
                         alt="Images"
                         className='w-[274px] h-[274px] object-cover'
                     />
-                    <img
+                    {!normal && <img
                         src={isNew ? label : labelBlue}
                         alt=""
                         className={`absolute w-[100px] h-[35px] top-0 right-0 object-cover `}
-                    />
-
+                    />}
                 </div>
                 <div className='flex flex-col mt-[15px] items-start gap-1 w-full'>
                     <span className='flex h-4'>{renderStarFromNumber(productData?.totalRatings)?.map((el, index) => (
