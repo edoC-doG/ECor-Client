@@ -18,4 +18,5 @@ export { default as BreadCrumbs } from './BreadCrumbs'
 export { default as SelectQuantityPro } from './SelectQuantityPro'
 export { default as ProdExtraInfItem } from './ProdExtraInfItem'
 export { default as ProdDesInf } from './ProdDesInf'
+export { default as SearchItem } from './SearchItem'
 

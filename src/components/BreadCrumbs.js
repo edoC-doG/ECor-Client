@@ -12,7 +12,7 @@ const BreadCrumbs = ({ title, category }) => {
     ]
     const breadcrumb = useBreadcrumbs(routes)
     return (
-        <div className='text-sm'>
+        <div className=' flex text-sm gap-1 items-center'>
             {breadcrumb?.filter(el => !el.match.route === false).map(({ match, breadcrumb }, idx, self) => (
                 <Link
                     className='flex gap-1 items-center hover:text-main'

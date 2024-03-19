@@ -19,8 +19,8 @@ const ProdDesInf = () => {
                     </span>
                 ))}
             </div>
-            <div className='w-full h-[300px] border'>
-
+            <div className='w-full p-4 border'>
+                {tabsProd.some(el => el.id === activedTab) && tabsProd.find(el => el.id === activedTab)?.content}
             </div>
         </div>
     )
