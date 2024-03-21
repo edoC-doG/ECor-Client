@@ -111,3 +111,46 @@ export const colors = [
     'green',
     'blue'
 ]
+
+export const sorts = [
+    {
+        id: 1,
+        value: '',
+        text: 'Featured'
+    },
+    {
+        id: 2,
+        value: '-sold',
+        text: 'Best Selling'
+    },
+    {
+        id: 3,
+        value: '-title',
+        text: 'Alphabetically, A-Z'
+    },
+    {
+        id: 4,
+        value: 'title',
+        text: 'Alphabetically, Z-A'
+    },
+    {
+        id: 5,
+        value: '-price',
+        text: 'Price, high to low'
+    },
+    {
+        id: 6,
+        value: 'price',
+        text: 'Price, low to high'
+    },
+    {
+        id: 7,
+        value: '-createdAt',
+        text: 'Date, new to old'
+    },
+    {
+        id: 8,
+        value: 'createdAt',
+        text: 'Date, old to new'
+    },
+]

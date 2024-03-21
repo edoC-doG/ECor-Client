@@ -19,4 +19,5 @@ export { default as SelectQuantityPro } from './SelectQuantityPro'
 export { default as ProdExtraInfItem } from './ProdExtraInfItem'
 export { default as ProdDesInf } from './ProdDesInf'
 export { default as SearchItem } from './SearchItem'
+export { default as InputSelect } from './InputSelect'
 
