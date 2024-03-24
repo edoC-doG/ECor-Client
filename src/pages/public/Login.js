@@ -169,9 +169,10 @@ const Login = () => {
                     />
                     <Button
                         fw
-                        name={isRegister ? 'Register' : 'Login'}
                         handleOnClick={handleSubmit}
-                    />
+                    >
+                        {isRegister ? 'Register' : 'Login'}
+                    </Button>
                     <div className='flex items-center justify-between mt-2 w-full text-sm'>
                         {!isRegister && <span
                             className='text-blue-500 hover:underline cursor-pointer'

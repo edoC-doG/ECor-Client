@@ -72,7 +72,7 @@ const SearchItem = ({ name, activeClick, changeActiveFilter, type }) => {
                             onClick={e => {
                                 e.stopPropagation()
                                 setSelected([])
-
+                                changeActiveFilter(null)
                             }}
                             className='underline cursor-pointer hover:text-main'
                         >
@@ -101,7 +101,7 @@ const SearchItem = ({ name, activeClick, changeActiveFilter, type }) => {
                     </div>
                 </div>}
                 {type === 'input' && <div>
-                    <div onClick={e => e.stopPropagation()} className='p-4 items-center flex justify-between gap-8'>
+                    <div className='p-4 items-center flex justify-between gap-8'>
                         <span className='whitespace-nowrap'>{`The highest price is ${Number(bestPrice).toLocaleString()} VND`}</span>
                         <span
                             onClick={e => {

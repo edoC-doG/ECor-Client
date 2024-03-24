@@ -19,11 +19,14 @@ const DetailProduct = () => {
     const { pid, title, category } = useParams()
     const [product, setProduct] = useState(null)
     const [quantity, setQuantity] = useState(1)
+    const [update, setUpdate] = useState(false)
+    const [currentImg, setCurrentImg] = useState('https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png')
     const [relatedProd, setRelatedProd] = useState(null)
     const fetchProductData = async () => {
         const res = await apiGetCategories(pid)
         if (res.success) {
             setProduct(res.productData)
+            setCurrentImg(res?.productData?.thumb)
         }
     }
     const fetchProducts = async () => {
@@ -32,9 +35,20 @@ const DetailProduct = () => {
             setRelatedProd(res.products)
         }
     }
+
+    const reRender = useCallback(() => {
+        setUpdate(!update)
+    }, [])
+
     useEffect(() => {
         // if(pid) fetchProductData()
+    }, [update])
+    useEffect(() => {
+        // if(pid) {
+        //    fetchProductData()
         //fetchProducts()
+        // }
+        window.scrollTo(0, 0)
     }, [pid])
 
     const handleQuantity = useCallback((number) => {
@@ -43,8 +57,15 @@ const DetailProduct = () => {
         } else setQuantity(number)
     }, [quantity])
 
+    const handleSwapImg = (e, el) => {
+        e.stopPropagation()
+        setCurrentImg(el)
+    }
     const handleChangeQuantity = useCallback((flag) => {
-        if (flag === 'minus' && quantity === 1) toast.warning('Do not buy item has quantity equal than 0')
+        if (flag === 'minus' && quantity === 1) {
+            toast.warning('Do not buy item has quantity equal than 0')
+            return
+        }
         if (flag === 'minus') setQuantity(prev => +prev - 1)
         if (flag === 'plus') setQuantity(prev => +prev + 1)
     }, [quantity])
@@ -58,15 +79,15 @@ const DetailProduct = () => {
             </div>
             <div className='w-main m-auto mt-4 flex'>
                 <div className='flex-col flex gap-4 w-2/5'>
-                    <div className='h-[458px] w-[458px] border'>
+                    <div className='h-[458px] w-[458px] border object-cover overflow-hidden'>
                         <ReactImageMagnify {...{
                             smallImage: {
                                 alt: 'Wristwatch by Ted Baker London',
                                 isFluidWidth: true,
-                                src: product?.thumb
+                                src: currentImg
                             },
                             largeImage: {
-                                src: product?.thumb,
+                                src: currentImg,
                                 width: 1800,
                                 height: 1500
                             }
@@ -74,10 +95,17 @@ const DetailProduct = () => {
                     </div>
                     {/* <img src={product?.images} alt='product' className='h-[458px] w-[458px] border object-cover' /> */}
                     <div className='w-[458px]'>
-                        <Slider className='image-slider flex gap-2 justify-between' {...settings}>
+                        <Slider
+                            className='image-slider flex gap-2 justify-between' {...settings}
+                        >
                             {product?.images?.map(el => (
                                 <div className='flex-1' key={el}>
-                                    <img src={el} alt='sub-product' className='w-[143px] border object-contain' />
+                                    <img
+                                        src={el}
+                                        alt='sub-product'
+                                        onClick={(e) => handleSwapImg(e, el)}
+                                        className='w-[143px] h-[143px] border object-cover cursor-pointer'
+                                    />
                                 </div>
                             ))}
                         </Slider>
@@ -86,13 +114,13 @@ const DetailProduct = () => {
                 <div className='w-2/5 pr-6 flex flex-col gap-4'>
                     <div className='flex items-center justify-between'>
                         <h2 className='text-[30px] font-semibold'>{`${formatMoney(formatPrice(product?.price))} VND`}</h2>
-                        <span className='text-sm text-main'>{`Storage: ${product?.quantity}`}</span>
+                        <span className='text-sm text-main'>{`In stock: ${product?.quantity}`}</span>
                     </div>
                     <div className='flex items-center gap-1'>
                         {renderStarFromNumber(product?.totalRatings)?.map((el, idx) => (<span key={idx}>
                             {el}
                         </span>))}
-                        <span className='text-sm text-main italic'>{`Sold: ${product?.sold}`}</span>
+                        <span className='text-sm text-main italic'>{`Sold: ${product?.sold} pieces`}</span>
                     </div>
                     <ul className='list-square text-sm text-gray-600 pl-3'>
                         {product?.description?.map(el => (<li className='leading-4' key={el}>{el}</li>))}
@@ -123,7 +151,13 @@ const DetailProduct = () => {
                 </div>
             </div>
             <div className='w-main m-auto mt-8'>
-                <ProdDesInf />
+                <ProdDesInf
+                    total={(product?.totalRatings || 5)}
+                    ratings={product?.ratings || []}
+                    nameProduct={product?.title || 'Nan'}
+                    pid={product?._id}
+                    reRender={reRender}
+                />
             </div>
             <div className='w-main m-auto mt-8'>
                 <h3 className='text-[20px] uppercase font-semibold py-[15px] border-b-4 border-main'>

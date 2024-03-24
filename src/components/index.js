@@ -20,4 +20,7 @@ export { default as ProdExtraInfItem } from './ProdExtraInfItem'
 export { default as ProdDesInf } from './ProdDesInf'
 export { default as SearchItem } from './SearchItem'
 export { default as InputSelect } from './InputSelect'
+export { default as RatingBar } from './RatingBar'
+export { default as Modal } from './Modal'
+export { default as VoteOption } from './VoteOption'
 
