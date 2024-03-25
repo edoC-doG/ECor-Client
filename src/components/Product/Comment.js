@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
-import userDefault from '../../assets/userDefault.png'
+import userDefault from 'assets/userDefault.png'
 import moment from 'moment'
-import { renderStarFromNumber } from '../../utils/helper'
+import { renderStarFromNumber } from 'utils/helper'
 
 const Comment = ({ imageUser = userDefault, nameUser = 'Anonymous', updateAt, total, comment }) => {
     return (

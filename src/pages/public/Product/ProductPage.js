@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useParams, useSearchParams, useNavigate, createSearchParams } from 'react-router-dom';
-import { BreadCrumbs, InputSelect, ProductItem, SearchItem } from '../../../components';
-import { apiGetProducts } from '../../../apis';
+import { BreadCrumbs, InputSelect, ProductItem, SearchItem, Pagination } from 'components';
+import { apiGetProducts } from 'apis';
 import Masonry from 'react-masonry-css'
 import { toast } from 'react-toastify';
-import { sorts } from '../../../utils/contants';
+import { sorts } from 'utils/contants';
 const breakpointColumnsObj = {
     default: 4,
     1100: 3,
@@ -20,7 +20,7 @@ const ProductPage = () => {
     const [sort, setSort] = useState('')
     const fetchProdByCate = async (queries) => {
         const res = await apiGetProducts(queries)
-        if (res.success) setProducts(res.products)
+        if (res.success) setProducts(res)
     }
     const { category } = useParams()
     useEffect(() => {
@@ -41,16 +41,19 @@ const ProductPage = () => {
                 ]
             }
             delete queries.price
-        }
-        if (queries.from) {
-            queries.price = { gte: queries.from }
-        }
-        if (queries.to) {
-            queries.price = { lte: queries.to }
+        } else {
+            if (queries.from) {
+                queries.price = { gte: queries.from }
+            }
+            if (queries.to) {
+                queries.price = { lte: queries.to }
+            }
         }
         delete queries.to
         delete queries.from
-        //fetchProdByCate({...priceQuery, ...queries})
+        const q = { ...priceQuery, ...queries }
+        //fetchProdByCate(q)
+        window.scrollTo(0, 0)
     }, [params])
     const changeActiveFilter = useCallback((name) => {
         if (activeClick === name) setActiveClick(null)
@@ -60,10 +63,12 @@ const ProductPage = () => {
         setSort(value)
     }, [sort])
     useEffect(() => {
-        navigate({
-            pathname: `/${category}`,
-            search: createSearchParams({ sort }).toString()
-        })
+        if (sort) {
+            navigate({
+                pathname: `/${category}`,
+                search: createSearchParams({ sort }).toString()
+            })
+        }
     }, [sort])
     return (
         <div className='w-full' >
@@ -101,7 +106,7 @@ const ProductPage = () => {
                     breakpointCols={breakpointColumnsObj}
                     className="my-masonry-grid flex mx-[-10px]"
                     columnClassName="my-masonry-grid_column">
-                    {products?.map((el) => (
+                    {products?.products?.map((el) => (
                         <ProductItem
                             key={el.id}
                             pid={el.id}
@@ -111,6 +116,11 @@ const ProductPage = () => {
                     ))}
                 </Masonry>
             </div>
+            {products?.products?.length > 0 && <div className=' w-main m-auto my-4 flex justify-end'>
+                <Pagination
+                    totalCount={products?.counts}
+                />
+            </div>}
             <div className='w-full h-[500px]'></div>
         </div>
     )

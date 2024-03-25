@@ -1,13 +1,13 @@
 import React, { memo, useState, useCallback } from 'react'
-import { tabsProd } from '../../utils/contants'
+import { tabsProd } from 'utils/contants'
 import { Button, Comment, RatingBar, VoteOption } from '..'
-import { renderStarFromNumber, validate } from '../../utils/helper'
-import { apiRatings } from '../../apis'
-import { showModal } from '../../store/app/appSlice'
+import { renderStarFromNumber, validate } from 'utils/helper'
+import { apiRatings } from 'apis'
+import { showModal } from 'store/app/appSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
-import path from '../../utils/path'
+import path from 'utils/path'
 import { useNavigate } from 'react-router-dom';
 
 
