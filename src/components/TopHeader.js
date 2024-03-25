@@ -10,12 +10,16 @@ const { AiOutlineLogout } = icons
 
 const TopHeader = () => {
     const dispatch = useDispatch()
-
     const { isLoggedIn, current } = useSelector(state => state.user)
 
     useEffect(() => {
-        if (isLoggedIn) dispatch(getCurrentUser())
+        const setTimeOutId = setTimeout(() => {
+            if (isLoggedIn) dispatch(getCurrentUser())
+        }, 300)
 
+        return () => {
+            clearTimeout(setTimeOutId)
+        }
     }, [dispatch, isLoggedIn])
     return (
         <div

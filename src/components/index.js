@@ -23,4 +23,5 @@ export { default as InputSelect } from './InputSelect'
 export { default as RatingBar } from './RatingBar'
 export { default as Modal } from './Modal'
 export { default as VoteOption } from './VoteOption'
+export { default as Comment } from './Comment'
 
