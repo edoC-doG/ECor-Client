@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { apiGetCategories, apiGetProducts } from '../../apis'
-import { BreadCrumbs, Button, CustomSlider, ProdDesInf, ProdExtraInfItem, SelectQuantityPro } from '../../components'
+import { apiGetCategories, apiGetProducts } from '../../../apis'
+import { BreadCrumbs, Button, CustomSlider, ProdDesInf, ProdExtraInfItem, SelectQuantityPro } from '../../../components'
 import Slider from "react-slick"
 import ReactImageMagnify from 'react-image-magnify';
-import { formatMoney, formatPrice, renderStarFromNumber } from '../../utils/helper'
+import { formatMoney, formatPrice, renderStarFromNumber } from '../../../utils/helper'
 import { toast } from 'react-toastify';
-import { prodExtraInf } from '../../utils/contants'
+import { prodExtraInf } from '../../../utils/contants'
 const settings = {
     dots: true,
     isFinite: true,

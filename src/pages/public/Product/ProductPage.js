@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useParams, useSearchParams, useNavigate, createSearchParams } from 'react-router-dom';
-import { BreadCrumbs, InputSelect, ProductItem, SearchItem } from '../../components';
-import { apiGetProducts } from '../../apis';
+import { BreadCrumbs, InputSelect, ProductItem, SearchItem } from '../../../components';
+import { apiGetProducts } from '../../../apis';
 import Masonry from 'react-masonry-css'
 import { toast } from 'react-toastify';
-import { sorts } from '../../utils/contants';
+import { sorts } from '../../../utils/contants';
 const breakpointColumnsObj = {
     default: 4,
     1100: 3,

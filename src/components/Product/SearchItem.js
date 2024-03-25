@@ -1,9 +1,9 @@
 import React, { memo, useEffect, useState } from 'react'
-import icons from './../utils/icons';
-import { colors } from '../utils/contants';
+import icons from '../../utils/icons';
+import { colors } from '../../utils/contants';
 import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
-import { apiGetProducts } from '../apis';
-import useDebounce from './../hooks/useDebounce';
+import { apiGetProducts } from '../../apis';
+import useDebounce from '../../hooks/useDebounce';
 import { toast } from 'react-toastify';
 
 

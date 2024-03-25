@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import login from '../../assets/login.jpg'
-import { Button, InputField } from '../../components'
-import { apiLogin, apiForgotPwd, apiFinalRegister, apiRegister } from '../../apis/user'
+import login from '../../../assets/login.jpg'
+import { Button, InputField } from '../../../components'
+import { apiLogin, apiForgotPwd, apiFinalRegister, apiRegister } from '../../../apis/user'
 import Swal from 'sweetalert2'
 import { useNavigate, Link } from 'react-router-dom'
-import path from '../../utils/path'
-import { registerV2 } from '../../store/user/userSlice'
+import path from '../../../utils/path'
+import { registerV2 } from '../../../store/user/userSlice'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify';
-import { validate } from '../../utils/helper'
+import { validate } from '../../../utils/helper'
 
 const Login = () => {
     const navigate = useNavigate()
