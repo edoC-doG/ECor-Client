@@ -1,7 +1,27 @@
 import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom'
 import path from './utils/path'
-import { Home, Login, PublicPage, FAQ, Services, Blogs, DetailProduct, ProductPage, FinalRegister, ResetPwd } from './pages/public'
+import {
+  Home,
+  Login,
+  PublicPage,
+  FAQ,
+  Services,
+  Blogs,
+  DetailProduct,
+  ProductPage,
+  FinalRegister,
+  ResetPwd
+} from './pages/public'
+import {
+  AdminLayout,
+  CreateProduct,
+  DashBoard,
+  ManagerOrder,
+  ManagerProduct,
+  ManagerUser
+} from './pages/admin'
+import { LayoutMember, Member } from './pages/member'
 import { getCategories } from './store/app/asyncAction';
 import { useDispatch, useSelector } from 'react-redux'
 import { Modal } from './components'
@@ -25,6 +45,16 @@ function App() {
           <Route path={path.PRODUCTS} element={<ProductPage />} />
           <Route path={path.DETAIL_PRODUCT_CATE_PID_TITLE} element={<DetailProduct />} />
           <Route path={path.RESET_PWD} element={<ResetPwd />} />
+        </Route>
+        <Route path={path.ADMIN} element={<AdminLayout />}>
+          <Route path={path.DASHBOARD} element={<DashBoard />} />
+          <Route path={path.CREATE_PRODUCT} element={< CreateProduct />} />
+          <Route path={path.MANAGE_ORDER} element={<ManagerOrder />} />
+          <Route path={path.MANAGE_PRODUCT} element={<ManagerProduct />} />
+          <Route path={path.MANAGE_USER} element={<ManagerUser />} />
+        </Route>
+        <Route path={path.MEMBER} element={<LayoutMember />}>
+          <Route path={path.PERSONAL} element={<Member />} />
         </Route>
         <Route path={path.LOGIN} element={<Login />} />
         <Route path={path.FINAL_REGISTER} element={<FinalRegister />} />

@@ -10,6 +10,19 @@ const path = {
     FAQS: 'faqs',
     FINAL_REGISTER: 'final-register/:status',
     RESET_PWD: 'reset-password/:token',
+
+
+    //Admin
+    ADMIN: 'admin',
+    DASHBOARD: 'dashboard',
+    MANAGE_USER: 'manager-user',
+    MANAGE_PRODUCT: 'manage-product',
+    MANAGE_ORDER: 'manage-order',
+    CREATE_PRODUCT: 'create-product',
+
+    //Member
+    MEMBER: 'member',
+    PERSONAL: 'personal'
 }
 
 export default path

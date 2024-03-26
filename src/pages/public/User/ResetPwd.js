@@ -29,10 +29,11 @@ const ResetPwd = () => {
                     />
                     <div className='w-full flex items-center justify-end gap-4'>
                         <Button
-                            name='Submit'
                             handleOnClick={handleForgotPwd}
                             style='px-4 py-2 rounded-md text-white bg-blue-500 text-semibold my-2'
-                        />
+                        >
+                            Submit
+                        </Button>
                     </div>
                 </div>
             </div>

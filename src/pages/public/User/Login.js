@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import login from 'assets/login.jpg'
-import { Button, InputField } from 'components'
+import { Button, InputField, Loading } from 'components'
 import { apiLogin, apiForgotPwd, apiFinalRegister, apiRegister } from 'apis/user'
 import Swal from 'sweetalert2'
 import { useNavigate, Link } from 'react-router-dom'
@@ -9,6 +9,7 @@ import { registerV2 } from 'store/user/userSlice'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify';
 import { validate } from 'utils/helper'
+import { showModal } from 'store/app/appSlice'
 
 const Login = () => {
     const navigate = useNavigate()
@@ -43,7 +44,9 @@ const Login = () => {
         const invalids = isRegister ? validate(payload, setInvalidFields) : validate(data, setInvalidFields)
         if (invalids === 0) {
             if (isRegister) {
+                dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }))
                 const res = await apiRegister(payload)
+                dispatch(showModal({ isShowModal: false, modalChildren: null }))
                 if (res.success) {
                     setisVerifiedEmail(true)
                 } else Swal.fire('Oops!', res.mes, 'error')
@@ -88,10 +91,11 @@ const Login = () => {
                         className='p-2 border rounded-md outline-none'
                     />
                     <Button
-                        name='Submit'
                         handleOnClick={() => finalRegister()}
                         style='px-4 py-2 rounded-md text-white bg-blue-500 text-semibold my-2 ml-4'
-                    />
+                    >
+                        Submit
+                    </Button>
                 </div>
             </div>}
             {isForgotPwD && <div className='absolute top-0 left-0 bottom-0 right-0 animate-slide-right bg-white flex flex-col items-center py-8 z-50'>
@@ -107,14 +111,16 @@ const Login = () => {
                     />
                     <div className='w-full flex items-center justify-end gap-4'>
                         <Button
-                            name='Submit'
                             handleOnClick={handleForgotPwd}
                             style='px-4 py-2 rounded-md text-white bg-blue-500 text-semibold my-2'
-                        />
+                        >
+                            Sumbit
+                        </Button>
                         <Button
-                            name='Back'
                             handleOnClick={() => setIsForgotPwD(false)}
-                        />
+                        >
+                            Back
+                        </Button>
                     </div>
                 </div>
             </div>}
