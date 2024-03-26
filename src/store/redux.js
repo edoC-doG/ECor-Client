@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import appSlice from './app/appSlice';
 import productSlice from './products/productSlice';
 import storage from 'redux-persist/lib/storage';
-import { persistReducer, persistStore } from 'redux-persist'
+import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
 import userSlice from './user/userSlice';
 const commonConfig = {
   key: 'shop/user',
@@ -22,7 +22,9 @@ export const store = configureStore({
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
-      serializableCheck: false,
+      serializableCheck: {
+        ignoreActions: [FLUSH, REGISTER, REHYDRATE, PAUSE, PURGE, PERSIST]
+      },
     }),
 });
 
