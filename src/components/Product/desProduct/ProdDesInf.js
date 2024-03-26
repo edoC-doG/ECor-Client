@@ -1,6 +1,6 @@
 import React, { memo, useState, useCallback } from 'react'
 import { tabsProd } from 'utils/contants'
-import { Button, Comment, RatingBar, VoteOption } from '..'
+import { Button, Comment, RatingBar, VoteOption } from '../..'
 import { renderStarFromNumber, validate } from 'utils/helper'
 import { apiRatings } from 'apis'
 import { showModal } from 'store/app/appSlice'

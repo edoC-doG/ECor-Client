@@ -2,7 +2,7 @@ import React, { useEffect, useState, memo } from 'react'
 import icons from 'utils/icons'
 import { apiGetProducts } from 'apis/product'
 import { formatMoney, renderStarFromNumber, secondsToHms } from 'utils/helper'
-import { CountDown } from '..'
+import { CountDown } from '../..'
 import moment from 'moment'
 
 const { AiFillStar, IoMenu } = icons

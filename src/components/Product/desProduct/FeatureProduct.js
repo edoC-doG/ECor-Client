@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ProductCard } from '..'
+import { ProductCard } from '../..'
 import { apiGetProducts } from 'apis'
 import banner1 from 'assets/banner1.webp'
 import banner4 from 'assets/banner4.webp'
