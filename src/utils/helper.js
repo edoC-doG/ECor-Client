@@ -3,7 +3,14 @@ import icons from "./icons"
 const { AiFillStar, AiOutlineStar } = icons
 
 export const createSlug = string => string.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(' ').join('-')
-export const formatMoney = number => Number(number?.toFixed(1)).toLocaleString()
+export const formatMoney = number => {
+    // Kiểm tra nếu number không phải là một số hợp lệ
+    if (typeof number !== 'number' || isNaN(number)) {
+        return 'Invalid number';
+    }
+    // Sử dụng phương thức toFixed chỉ khi number hợp lệ
+    return Number(number.toFixed(1)).toLocaleString();
+}
 export const renderStarFromNumber = (number, size) => {
     if (!Number(number)) return
     const stars = []

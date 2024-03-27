@@ -1,11 +1,28 @@
 import { RiPhoneFill, RiTruckFill } from 'react-icons/ri'
-import { MdMail } from 'react-icons/md'
-import { BsHandbagFill, BsFillSuitHeartFill, BsShieldShaded, BsReplyFill } from 'react-icons/bs'
+import { MdMail, MdGroups } from 'react-icons/md'
+import {
+    BsHandbagFill,
+    BsFillSuitHeartFill,
+    BsShieldShaded,
+    BsReplyFill
+} from 'react-icons/bs'
 import { FaUserCircle, FaTty } from 'react-icons/fa'
 import { IoMenu } from 'react-icons/io5'
 import { IoIosArrowForward } from 'react-icons/io'
 import { BiDotsHorizontalRounded } from 'react-icons/bi'
-import { AiFillStar, AiOutlineStar, AiFillEye, AiOutlineLogout, AiFillGift, AiOutlineDown } from 'react-icons/ai'
+import { HiHome } from 'react-icons/hi2'
+import { LiaSitemapSolid } from "react-icons/lia";
+import {
+    AiFillStar,
+    AiOutlineStar,
+    AiFillEye,
+    AiOutlineLogout,
+    AiFillGift,
+    AiOutlineDown,
+    AiOutlineCaretUp,
+    AiOutlineCaretDown
+
+} from 'react-icons/ai'
 
 const icons = {
     RiPhoneFill,
@@ -23,7 +40,12 @@ const icons = {
     AiFillGift,
     FaTty,
     AiOutlineDown,
-    BiDotsHorizontalRounded
+    BiDotsHorizontalRounded,
+    HiHome,
+    MdGroups,
+    LiaSitemapSolid,
+    AiOutlineCaretDown,
+    AiOutlineCaretUp,
 }
 
 export default icons

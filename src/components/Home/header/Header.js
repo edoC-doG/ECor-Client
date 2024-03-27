@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, memo } from 'react'
 import logo from 'assets/logo.png'
 import icons from 'utils/icons'
 import { Link } from 'react-router-dom'
@@ -28,7 +28,7 @@ const Header = () => {
                     </span>
                     <span>Online Support 24/7</span>
                 </div>
-                {!current && <Fragment>
+                {current && <Fragment>
                     <div className='flex items-center justify-center gap-2 px-6 border-r cursor-pointer'>
                         <BsHandbagFill color='red' />
                         <span>0 item(s)</span>
@@ -46,4 +46,4 @@ const Header = () => {
     )
 }
 
-export default Header
+export default memo(Header)

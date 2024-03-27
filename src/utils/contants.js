@@ -27,10 +27,9 @@ export const navigation = [
         value: 'FAQS',
         path: `/${path.FAQS}`
     },
-
 ]
 
-const { RiTruckFill, BsShieldShaded, BsReplyFill, FaTty, AiFillGift } = icons
+const { RiTruckFill, BsShieldShaded, BsReplyFill, FaTty, AiFillGift, HiHome, MdGroups, LiaSitemapSolid } = icons
 
 export const prodExtraInf = [
     {
@@ -176,4 +175,57 @@ export const voteOption = [
         id: 5,
         text: 'Perfect'
     },
+]
+
+export const sideBarAdmin = [
+    {
+        id: 1,
+        type: 'SINGLE',
+        text: 'Dashboard',
+        path: `/${path.ADMIN}/${path.DASHBOARD}`,
+        icons: <HiHome />
+    },
+    {
+        id: 2,
+        type: 'SINGLE',
+        text: 'Manage users',
+        path: `/${path.ADMIN}/${path.MANAGE_USER}`,
+        icons: <MdGroups />
+    },
+    {
+        id: 3,
+        type: 'PARENT',
+        text: 'Manager products',
+        icons: <MdGroups />,
+        submenu: [
+            {
+                text: 'Create Products',
+                path: `/${path.ADMIN}/${path.CREATE_PRODUCT}`,
+            },
+            {
+                text: 'Manage Products',
+                path: `/${path.ADMIN}/${path.MANAGE_PRODUCT}`,
+            },
+
+        ]
+    },
+    {
+        id: 4,
+        type: 'SINGLE',
+        text: 'Manage orders',
+        path: `/${path.ADMIN}/${path.MANAGE_ORDER}`,
+        icons: <LiaSitemapSolid />
+    },
+
+]
+
+export const role = [
+    {
+        code: 2000,
+        value: 'Admin'
+    },
+    {
+        code: 2003,
+        value: 'User'
+    }
 ]
