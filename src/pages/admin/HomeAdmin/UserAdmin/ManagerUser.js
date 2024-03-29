@@ -1,28 +1,68 @@
-import { apiGetUser } from 'apis'
-import React, { memo, useCallback, useEffect, useState } from 'react'
+import { apiDeleteUser, apiGetUser, apiUpdateUser } from 'apis'
+import React, { useCallback, useEffect, useState } from 'react'
 import { role } from 'utils/contants'
 import moment from 'moment'
 import useDebounce from 'hooks/useDebounce'
-import { Button, InputField, Pagination } from 'components'
+import { Button, InputField, InputForm, Pagination, Select } from 'components'
 import { useSearchParams } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const ManagerUser = () => {
+    const { handleSubmit, register, formState: { errors } } = useForm({
+        email: '',
+        firstName: '',
+        lastName: '',
+        role: '',
+        mobile: '',
+        status: '',
+    })
     const [users, setUsers] = useState(null)
+    const [editElm, setEditElm] = useState(null)
+    const [update, setUpdate] = useState(null)
     const [querySearch, setQuerySearch] = useState({
         q: ""
     })
     const [params] = useSearchParams()
+    const render = useCallback(() => {
+        setUpdate(!update)
+    }, [update])
     const fetchUsers = async (data) => {
         const res = await apiGetUser({ ...data, limit: process.env.REACT_APP_LIMIT })
         if (res.success) setUsers(res)
     }
     const queriesDebounce = useDebounce(querySearch.q, 1000)
-
     useEffect(() => {
         const queries = Object.fromEntries([...params])
         if (queriesDebounce) queries.q = queriesDebounce
         fetchUsers(queries)
     }, [queriesDebounce, params])
+    const handleUpdate = async (data) => {
+        const res = await apiUpdateUser(data, editElm._id)
+        if (res.success) {
+            setEditElm(null)
+            render()
+            toast.success(res.mes)
+        } else toast.error(res.mes)
+    }
+
+    const handleDelete = (uid) => {
+        console.log(uid)
+        Swal.fire({
+            title: 'Are you sure delete this user',
+            text: ' Are you ready remove this user ?',
+            showCancelButton: true
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const res = await apiDeleteUser(uid)
+                if (res.success) {
+                    render()
+                    toast.success(res.mes)
+                } else toast.error(res.mes)
+            }
+        })
+    }
     return (
         <div className='w-full'>
             <h1 className='h-[75px] flex justify-between items-center text-3xl font-bold px-4 border-b'>
@@ -39,41 +79,147 @@ const ManagerUser = () => {
                         isShowLabel
                     />
                 </div>
-                <table className='table-auto mb-6 text-left w-full'>
-                    <thead className='font-bold bg-gray-700 text-[13px]  text-white'>
-                        <tr className='border border-gray-500'>
-                            <th className='px-4 py-2'>#</th>
-                            <th className='px-4 py-2'>Email</th>
-                            <th className='px-4 py-2'>FullName</th>
-                            <th className='px-4 py-2'>Role</th>
-                            <th className='px-4 py-2'>Phone</th>
-                            <th className='px-4 py-2'>Status</th>
-                            <th className='px-4 py-2'>Create At</th>
-                            <th className='px-4 py-2'>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users?.users?.map((el, idx) => (
-                            <tr key={idx} className='border border-gray-500'>
-                                <td className='py-2 px-4'>{idx + 1}</td>
-                                <td className='py-2 px-4'>{el.email}</td>
-                                <td className='py-2 px-4'>{`${el.lastName} ${el.firstName}`}</td>
-                                <td className='py-2 px-4'>{role.find(item => +item.code === +el.role)?.value}</td>
-                                <td className='py-2 px-4'>{el.mobile}</td>
-                                <td className='py-2 px-4'>{el.isBlocked ? 'Blocked' : 'Active'}</td>
-                                <td className='py-2 px-4'>{moment(el.createAt).format('DD/MM/YYYY')}</td>
-                                <td className='py-2 px-4'>
-                                    <div className=' flex justify-center items-center gap-2'>
-                                        <Button
-                                            style={`px-4 py-2 my-2 rounded-md text-white bg-blue-700 font-semibold`}
-                                        >Edit</Button>
-                                        <Button>Delete</Button>
-                                    </div>
-                                </td>
+                <form onSubmit={handleSubmit(handleUpdate)}>
+                    {editElm && <Button
+                        type='submit'
+                        style={`px-4 py-2 my-2 rounded-md text-white bg-blue-700 font-semibold hover:bg-blue-300`}
+                    >
+                        Update
+                    </Button>}
+                    <table className='table-auto mb-6 text-left w-full'>
+                        <thead className='font-bold bg-gray-700 text-[13px]  text-white'>
+                            <tr className='border border-gray-500'>
+                                <th className='px-4 py-2'>#</th>
+                                <th className='px-4 py-2'>Email</th>
+                                <th className='px-4 py-2'>First Name</th>
+                                <th className='px-4 py-2'>Last Name</th>
+                                <th className='px-4 py-2'>Role</th>
+                                <th className='px-4 py-2'>Phone</th>
+                                <th className='px-4 py-2'>Status</th>
+                                <th className='px-4 py-2'>Create At</th>
+                                <th className='px-4 py-2'>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {users?.users?.map((el, idx) => (
+                                <tr key={idx} className='border border-gray-500 text-start'>
+                                    <td className='py-2 px-4'>
+                                        {idx + 1}
+                                    </td>
+                                    <td className='py-2 px-4'>
+                                        {editElm?._id === el._id
+                                            ? <InputForm
+                                                register={register}
+                                                errors={errors}
+                                                fullWidth
+                                                id={'email'}
+                                                validate={{
+                                                    required: 'Require fill',
+                                                    pattern: {
+                                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                                        message: "Invalid email address"
+                                                    }
+                                                }}
+                                                defaultValue={editElm?.email}
+                                            />
+                                            : <span>
+                                                {el.email}
+                                            </span>}
+                                    </td>
+                                    <td className='py-2 px-4'>
+                                        {editElm?._id === el._id
+                                            ? <InputForm
+                                                register={register}
+                                                errors={errors}
+                                                fullWidth
+                                                id={'firstName'}
+                                                validate={{ required: 'Require fill' }}
+                                                defaultValue={editElm?.firstName}
+                                            />
+                                            : <span>
+                                                {el.firstName}
+                                            </span>}
+                                    </td>
+                                    <td className='py-2 px-4'>
+                                        {editElm?._id === el._id
+                                            ? <InputForm
+                                                register={register}
+                                                errors={errors}
+                                                fullWidth
+                                                id={'lastName'}
+                                                validate={{ required: 'Require fill' }}
+                                                defaultValue={editElm?.lastName}
+                                            />
+                                            : <span>
+                                                {el.lastName}
+                                            </span>}
+                                    </td>
+                                    <td className='py-2 px-4'>
+                                        {editElm?._id === el._id
+                                            ? <Select />
+                                            : <span>
+                                                {role.find(item => +item.code === +el.role)?.value}
+                                            </span>}
+                                    </td>
+                                    <td className='py-2 px-4'>
+                                        {editElm?._id === el._id
+                                            ? <InputForm
+                                                register={register}
+                                                errors={errors}
+                                                defaultValue={editElm?.mobile}
+                                                fullWidth
+                                                id={'mobile'}
+                                                validate={{
+                                                    required: 'Require fill',
+                                                    pattern: {
+                                                        value: /^(?!.*00)0\d{9}$/gi,
+                                                        message: "Invalid phone number"
+                                                    }
+                                                }}
+                                            />
+                                            : <span>
+                                                {el.mobile}
+                                            </span>}
+                                    </td>
+                                    <td className='py-2 px-4'>
+                                        {editElm?._id === el._id
+                                            ? <Select />
+                                            : <span>
+                                                {el.isBlocked ? 'Blocked' : 'Active'}
+                                            </span>}
+                                    </td>
+                                    <td className='py-2 px-4 '>
+                                        {moment(el.createAt).format('DD/MM/YYYY')}
+                                    </td>
+                                    <td className='py-2 px-4'>
+                                        <div className=' flex justify-center items-center gap-2'>
+                                            {editElm?._id === el._id
+                                                ? <Button
+                                                    handleOnClick={() => setEditElm(null)}
+                                                    style={`px-4 py-2 my-2 rounded-md text-white bg-blue-700 font-semibold hover:bg-blue-300`}
+                                                >
+                                                    Back
+                                                </Button>
+                                                : <Button
+                                                    handleOnClick={() => setEditElm(el)}
+                                                    style={`px-4 py-2 my-2 rounded-md text-white bg-blue-700 font-semibold hover:bg-blue-300`}
+                                                >
+                                                    Edit
+                                                </Button>
+                                            }
+
+                                            <Button
+                                                handleOnClick={() => handleDelete(el._id)}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </form>
             </div>
             <div className='w-full text-right p-4'>
                 <Pagination
@@ -81,8 +227,8 @@ const ManagerUser = () => {
                     totalCount={users?.counts}
                 />
             </div>
-        </div>
+        </div >
     )
 }
 
-export default memo(ManagerUser)
+export default ManagerUser

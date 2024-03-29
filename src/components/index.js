@@ -28,10 +28,12 @@ export {
     CustomSlider,
     InputField,
     InputSelect,
+    InputForm,
     Modal,
     Navigation,
     PagiItem,
     Pagination,
     Loading,
+    Select
 } from './Utils'
 

@@ -135,6 +135,7 @@ const Login = () => {
                     {isRegister && <div>
                         <div className='flex items-center gap-2'>
                             <InputField
+                                fw
                                 value={payload.lastName}
                                 setValue={setPayload}
                                 nameKey='lastName'
@@ -142,6 +143,7 @@ const Login = () => {
                                 setInvalidFields={setInvalidFields}
                             />
                             <InputField
+                                fw
                                 value={payload.firstName}
                                 setValue={setPayload}
                                 nameKey='firstName'
@@ -150,6 +152,7 @@ const Login = () => {
                             />
                         </div>
                         <InputField
+                            fw
                             value={payload.mobile}
                             setValue={setPayload}
                             nameKey='mobile'
@@ -159,6 +162,7 @@ const Login = () => {
                     </div>
                     }
                     <InputField
+                        fw
                         value={payload.email}
                         setValue={setPayload}
                         nameKey='email'
@@ -166,6 +170,7 @@ const Login = () => {
                         setInvalidFields={setInvalidFields}
                     />
                     <InputField
+                        fw
                         value={payload.password}
                         setValue={setPayload}
                         nameKey='password'
