@@ -219,7 +219,7 @@ export const sideBarAdmin = [
 
 ]
 
-export const role = [
+export const roleList = [
     {
         code: 2000,
         value: 'Admin'
@@ -227,5 +227,16 @@ export const role = [
     {
         code: 2003,
         value: 'User'
+    }
+]
+
+export const blockStatus = [
+    {
+        code: true,
+        value: 'Blocked'
+    },
+    {
+        code: false,
+        value: 'Active'
     }
 ]

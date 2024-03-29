@@ -1,6 +1,6 @@
 import { apiDeleteUser, apiGetUser, apiUpdateUser } from 'apis'
 import React, { useCallback, useEffect, useState } from 'react'
-import { role } from 'utils/contants'
+import { blockStatus, roleList } from 'utils/contants'
 import moment from 'moment'
 import useDebounce from 'hooks/useDebounce'
 import { Button, InputField, InputForm, Pagination, Select } from 'components'
@@ -8,19 +8,20 @@ import { useSearchParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import clsx from 'clsx'
 
 const ManagerUser = () => {
-    const { handleSubmit, register, formState: { errors } } = useForm({
+    const { handleSubmit, register, reset, formState: { errors } } = useForm({
         email: '',
         firstName: '',
         lastName: '',
         role: '',
         mobile: '',
-        status: '',
+        isBlocked: '',
     })
     const [users, setUsers] = useState(null)
     const [editElm, setEditElm] = useState(null)
-    const [update, setUpdate] = useState(null)
+    const [update, setUpdate] = useState(false)
     const [querySearch, setQuerySearch] = useState({
         q: ""
     })
@@ -37,16 +38,25 @@ const ManagerUser = () => {
         const queries = Object.fromEntries([...params])
         if (queriesDebounce) queries.q = queriesDebounce
         fetchUsers(queries)
-    }, [queriesDebounce, params])
+    }, [queriesDebounce, params, update])
+    useEffect(() => {
+        if (editElm) reset({
+            role: editElm.role,
+            email: editElm.email,
+            firstName: editElm.firstName,
+            lastName: editElm.lastName,
+            mobile: editElm.mobile,
+            isBlocked: editElm.isBlocked,
+        })
+    }, [editElm])
     const handleUpdate = async (data) => {
         const res = await apiUpdateUser(data, editElm._id)
         if (res.success) {
-            setEditElm(null)
             render()
+            setEditElm(null)
             toast.success(res.mes)
         } else toast.error(res.mes)
     }
-
     const handleDelete = (uid) => {
         console.log(uid)
         Swal.fire({
@@ -64,7 +74,7 @@ const ManagerUser = () => {
         })
     }
     return (
-        <div className='w-full'>
+        <div className={clsx('w-full', editElm && 'pl-16')}>
             <h1 className='h-[75px] flex justify-between items-center text-3xl font-bold px-4 border-b'>
                 <span>Manage users</span>
             </h1>
@@ -156,9 +166,17 @@ const ManagerUser = () => {
                                     </td>
                                     <td className='py-2 px-4'>
                                         {editElm?._id === el._id
-                                            ? <Select />
+                                            ? <Select
+                                                register={register}
+                                                fullWidth
+                                                errors={errors}
+                                                defaultValue={el.role}
+                                                id={'role'}
+                                                validate={{ require: 'Require fill' }}
+                                                options={roleList}
+                                            />
                                             : <span>
-                                                {role.find(item => +item.code === +el.role)?.value}
+                                                {roleList.find(item => +item.code === +el.role)?.value}
                                             </span>}
                                     </td>
                                     <td className='py-2 px-4'>
@@ -183,7 +201,15 @@ const ManagerUser = () => {
                                     </td>
                                     <td className='py-2 px-4'>
                                         {editElm?._id === el._id
-                                            ? <Select />
+                                            ? <Select
+                                                register={register}
+                                                fullWidth
+                                                errors={errors}
+                                                defaultValue={el.isBlocked}
+                                                id={'isBlocked'}
+                                                validate={{ require: 'Require fill' }}
+                                                options={blockStatus}
+                                            />
                                             : <span>
                                                 {el.isBlocked ? 'Blocked' : 'Active'}
                                             </span>}
