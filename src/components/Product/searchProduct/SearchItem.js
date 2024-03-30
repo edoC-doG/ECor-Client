@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 
 const { AiOutlineDown } = icons
-const SearchItem = ({ name, activeClick, changeActiveFilter, type }) => {
+const SearchItem = ({ name, activeClick, changeActiveFilter, type = "checkbox" }) => {
     const { category } = useParams()
     const navigate = useNavigate()
     const [selected, setSelected] = useState([])
@@ -25,14 +25,11 @@ const SearchItem = ({ name, activeClick, changeActiveFilter, type }) => {
         changeActiveFilter(null)
     }
     const fetchBestPriceProd = async () => {
-        const res = await apiGetProducts({ sort: 'price', limit: 1 })
-        if (res.success) setBestPrice(res.products.price)
+        const res = await apiGetProducts({ sort: '-price', limit: 1 })
+        if (res.success) setBestPrice(res.products[0]?.price)
     }
     useEffect(() => {
-        let param = []
-        for (let i of params.entries()) param.push(i)
-        const queries = {}
-        for (let i of param) queries[i[0]] = i[1]
+        const queries = Object.fromEntries([...params])
         if (selected.length > 0) {
             queries.color = selected.join(',')
             queries.page = 1
@@ -44,26 +41,21 @@ const SearchItem = ({ name, activeClick, changeActiveFilter, type }) => {
     }, [selected])
 
     useEffect(() => {
-        // if (type === 'input') fetchBestPriceProd()
-    }, [
-        // input
-    ])
+        if (type === 'input') fetchBestPriceProd()
+    }, [type])
 
     useEffect(() => {
         if (price.from && price.to && price.from > price.to) toast.warning('From price cannot greater than To price')
     }, [])
-    const deboucePriceFrom = useDebounce(price.from, 500)
-    const deboucePriceTo = useDebounce(price.to, 500)
+    const deboucePriceFrom = useDebounce(price.from, 800)
+    const deboucePriceTo = useDebounce(price.to, 800)
     useEffect(() => {
-        let param = []
-        for (let i of params.entries()) param.push(i)
-        const queries = {}
-        for (let i of param) queries[i[0]] = i[1]
+        const queries = Object.fromEntries([...params])
+        queries.page = 1
         if (Number(price.from) > 0) queries.from = price.from
         else delete queries.from
         if (Number(price.to) > 0) queries.to = price.to
         else delete queries.to
-        queries.page = 1
         navigate({
             pathname: `/${category}`,
             search: createSearchParams(queries).toString()

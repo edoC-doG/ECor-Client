@@ -20,7 +20,12 @@ const PagiItem = ({ children }) => {
             type='button'
             disabled={!Number(children)}
             onClick={handlePagination}
-            className={clsx('w-10 h-10 flex justify-center p-4', !Number(children) && 'items-end pb-2 ', Number(children) && 'items-center hover:rounded-full hover:bg-blue-300', +params.get('page') === +children && 'rounded-full bg-blue-500', +params.get('page') === +children && +children === 1 && 'rounded-full bg-blue-500')}
+            className={
+                clsx('w-10 h-10 flex justify-center p-4',
+                    !Number(children) && 'items-end pb-2 ',
+                    Number(children) && 'items-center hover:rounded-full hover:bg-blue-300',
+                    +params.get('page') === +children && 'rounded-full bg-blue-500',
+                    +params.get('page') === +children && +children === 1 && 'rounded-full bg-blue-500')}
         >
             {children}
         </button>

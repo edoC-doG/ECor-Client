@@ -26,7 +26,6 @@ const DetailProduct = () => {
         const res = await apiGetProduct(pid)
         if (res.success) {
             setProduct(res.productData)
-            console.log(product)
             setCurrentImg(res?.productData?.thumb)
         }
     }

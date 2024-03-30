@@ -22,7 +22,6 @@ const DealDaily = () => {
         })
         if (res.success) {
             setDealDaily(res.products[0])
-            console.log(dealDaily)
             const today = `${moment().format('MM/DD/YYYY')} 7:00:00`
             const second = new Date(today).getTime() - new Date().getTime() + 24 * 3600 * 1000
             const number = secondsToHms(second)

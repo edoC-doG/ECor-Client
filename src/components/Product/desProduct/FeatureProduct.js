@@ -14,7 +14,6 @@ const FeatureProduct = () => {
             // totalRatings: 5
         })
         if (res.success) setProducts(res.products)
-        console.log(products)
     }
     useEffect(() => {
         fetchProducts()

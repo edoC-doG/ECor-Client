@@ -20,17 +20,16 @@ const Home = () => {
                     <BestSeller />
                 </div>
             </div>
-            <div className='my-8'>
+            <div className='my-8 '>
                 <FeatureProduct />
             </div>
             <div className='my-8 w-full'>
                 <h3 className='text-[20px] uppercase font-semibold py-[15px] border-b-4 border-main'>
                     New Arrivals
                 </h3>
-                <div className='w-full mt-4 mx-[-10px]'>
+                <div className=' mt-4 mx-[-10px]'>
                     <CustomSlider
                         products={newProducts}
-
                     />
                 </div>
             </div>

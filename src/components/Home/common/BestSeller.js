@@ -30,15 +30,12 @@ const BestSeller = () => {
         }
     }
     useEffect(() => {
-        // fetchProducts()
-        // dispatch(getNewProducts())
+        fetchProducts()
+        dispatch(getNewProducts())
     }, [])
     useEffect(() => {
-        if (activeTab === 1) {
-            setProducts(bestSeller)
-        } else {
-            setProducts(newProducts)
-        }
+        if (activeTab === 1) setProducts(bestSeller)
+        if (activeTab === 2) setProducts(newProducts)
     }, [activeTab])
     return (
         <div>

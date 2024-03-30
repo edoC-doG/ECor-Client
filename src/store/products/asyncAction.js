@@ -6,6 +6,6 @@ export const getNewProducts = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         const response = await apis.apiGetProducts({ sort: '-createdAt' })
         if (!response.success) return rejectWithValue(response)
-        return response.getProducts
+        return response.products
     }
 )

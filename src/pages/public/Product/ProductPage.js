@@ -17,14 +17,14 @@ const ProductPage = () => {
     const [products, setProducts] = useState(null)
     const [activeClick, setActiveClick] = useState(null)
     const [params] = useSearchParams()
+    const { category } = useParams()
     const [sort, setSort] = useState('')
     const fetchProdByCate = async (queries) => {
         const res = await apiGetProducts(queries)
         if (res.success) setProducts(res)
     }
-    const { category } = useParams()
     useEffect(() => {
-        // Version1
+        // Version1 
         // let param = []
         // for (let i of params.entries()) param.push(i)
         // const queries = {}
@@ -44,17 +44,12 @@ const ProductPage = () => {
             }
             delete queries.price
         } else {
-            if (queries.from) {
-                queries.price = { gte: queries.from }
-            }
-            if (queries.to) {
-                queries.price = { lte: queries.to }
-            }
+            if (queries.from) queries.price = { gte: queries.from }
+            if (queries.to) queries.price = { lte: queries.to }
         }
         delete queries.to
         delete queries.from
         const q = { ...priceQuery, ...queries }
-        console.log(q)
         fetchProdByCate(q)
         window.scrollTo(0, 0)
     }, [params])
@@ -75,8 +70,8 @@ const ProductPage = () => {
     }, [sort])
     return (
         <div className='w-full' >
-            <div className='h-[81px] flex items-center justify-center bg-gray-100' >
-                <div className='w-main'>
+            <div className='w-full h-[81px] flex items-center justify-center bg-gray-100' >
+                <div className='w-full'>
                     <h3 className='font-semibold uppercase'>{category}</h3>
                     <BreadCrumbs category={category} />
                 </div>
