@@ -10,6 +10,7 @@ const settings = {
     slidesToScroll: 1,
 }
 const CustomSlider = ({ products, activeTab, normal }) => {
+    console.log(products)
     return (
         <>
             {

@@ -54,7 +54,8 @@ const ProductPage = () => {
         delete queries.to
         delete queries.from
         const q = { ...priceQuery, ...queries }
-        //fetchProdByCate(q)
+        console.log(q)
+        fetchProdByCate(q)
         window.scrollTo(0, 0)
     }, [params])
     const changeActiveFilter = useCallback((name) => {
@@ -108,9 +109,9 @@ const ProductPage = () => {
                     breakpointCols={breakpointColumnsObj}
                     className="my-masonry-grid flex mx-[-10px]"
                     columnClassName="my-masonry-grid_column">
-                    {products?.products?.map((el) => (
+                    {products?.products?.map((el, idx) => (
                         <ProductItem
-                            key={el.id}
+                            key={idx}
                             pid={el.id}
                             productData={el}
                             normal={true}

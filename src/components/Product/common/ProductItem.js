@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { formatMoney, renderStarFromNumber } from 'utils/helper'
+import { formatMoney, formatPrice, renderStarFromNumber } from 'utils/helper'
 import label from 'assets/new.png'
 import labelBlue from 'assets/trending.png'
 import { SelectOption } from '../..'
@@ -26,7 +26,7 @@ const ProductItem = ({ productData, isNew, normal }) => {
                 }}
             >
                 <div className='w-full relative'>
-                    {isShowOption && <div className='absolute bottom-[-10px] left-0 right-0 bg-red-500 flex justify-center animate-slide-top'>
+                    {isShowOption && <div className='absolute bottom-[-10px] left-0 right-0 flex justify-center animate-slide-top'>
                         <SelectOption icon={<AiFillEye />} />
                         <SelectOption icon={<IoMenu />} />
                         <SelectOption icon={<BsFillSuitHeartFill />} />
@@ -47,7 +47,7 @@ const ProductItem = ({ productData, isNew, normal }) => {
                         <span key={index}>{el}</span>
                     ))}</span>
                     <span className='line-clamp-1'>{productData?.title}</span>
-                    <span>{`${formatMoney(productData?.price)} VNĐ`}</span>
+                    <span>{`${formatMoney(formatPrice(productData?.price))} VND`}</span>
                 </div>
             </Link>
         </div>

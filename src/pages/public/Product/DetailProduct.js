@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { apiGetCategories, apiGetProducts } from 'apis'
+import { apiGetProduct, apiGetProducts } from 'apis'
 import { BreadCrumbs, Button, CustomSlider, ProdDesInf, ProdExtraInfItem, SelectQuantityPro } from 'components'
 import Slider from "react-slick"
 import ReactImageMagnify from 'react-image-magnify';
@@ -23,9 +23,10 @@ const DetailProduct = () => {
     const [currentImg, setCurrentImg] = useState('https://nayemdevs.com/wp-content/uploads/2020/03/default-product-image.png')
     const [relatedProd, setRelatedProd] = useState(null)
     const fetchProductData = async () => {
-        const res = await apiGetCategories(pid)
+        const res = await apiGetProduct(pid)
         if (res.success) {
             setProduct(res.productData)
+            console.log(product)
             setCurrentImg(res?.productData?.thumb)
         }
     }
@@ -41,13 +42,13 @@ const DetailProduct = () => {
     }, [])
 
     useEffect(() => {
-        // if(pid) fetchProductData()
+        if (pid) fetchProductData()
     }, [update])
     useEffect(() => {
-        // if(pid) {
-        //    fetchProductData()
-        //fetchProducts()
-        // }
+        if (pid) {
+            fetchProductData()
+            fetchProducts()
+        }
         window.scrollTo(0, 0)
     }, [pid])
 
@@ -93,10 +94,9 @@ const DetailProduct = () => {
                             }
                         }} />
                     </div>
-                    {/* <img src={product?.images} alt='product' className='h-[458px] w-[458px] border object-cover' /> */}
                     <div className='w-[458px]'>
                         <Slider
-                            className='image-slider flex gap-2 justify-between' {...settings}
+                            className='image-slider flex justify-between' {...settings}
                         >
                             {product?.images?.map(el => (
                                 <div className='flex-1' key={el}>
@@ -104,7 +104,7 @@ const DetailProduct = () => {
                                         src={el}
                                         alt='sub-product'
                                         onClick={(e) => handleSwapImg(e, el)}
-                                        className='w-[143px] h-[143px] border object-cover cursor-pointer'
+                                        className='h-[143px] border object-cover cursor-pointer'
                                     />
                                 </div>
                             ))}
@@ -159,13 +159,12 @@ const DetailProduct = () => {
                     reRender={reRender}
                 />
             </div>
-            <div className='w-main m-auto mt-8'>
+            <div className='w-main m-auto my-12 '>
                 <h3 className='text-[20px] uppercase font-semibold py-[15px] border-b-4 border-main'>
                     Other customer also liked
                 </h3>
                 <CustomSlider products={relatedProd} normal={true} />
             </div>
-            <div className='h-[500px] w-full'></div>
         </div >
     )
 }

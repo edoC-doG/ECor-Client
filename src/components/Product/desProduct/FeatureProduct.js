@@ -8,26 +8,32 @@ const FeatureProduct = () => {
     const [products, setProducts] = useState(null)
 
     const fetchProducts = async () => {
-        const res = await apiGetProducts({ limit: 9, totalRatings: 5 })
+        const res = await apiGetProducts({
+            limit: 9,
+            // page: Math.round(Math.random() * 10),
+            // totalRatings: 5
+        })
         if (res.success) setProducts(res.products)
+        console.log(products)
     }
     useEffect(() => {
-
+        fetchProducts()
     }, [])
     return (
         <div className='w-full'>
-            <h3 className='text-[20px] uppercase font-semibold py-[15px] border-b-4 border-main'>
+            <h3 className='text-[20px] uppercase font-semibold py-[15px] border-b-2 border-main'>
                 Feature products
             </h3>
             <div className='flex flex-wrap mt-[15px] mx-[-10px]'>
-                {products?.map(el => {
+                {products?.map((el, idx) => (
                     <ProductCard
-                        key={el.id}
-                        image={el.thumb}
-                        title={el.totalRatings}
-                        price={el.price}
+                        key={idx}
+                        image={el?.thumb}
+                        title={el?.title}
+                        price={el?.price}
+                        totalRatings={el?.totalRatings}
                     />
-                })}
+                ))}
             </div>
             <div className='flex justify-between'>
                 <img

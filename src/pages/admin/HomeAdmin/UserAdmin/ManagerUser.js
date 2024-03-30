@@ -172,7 +172,7 @@ const ManagerUser = () => {
                                                 errors={errors}
                                                 defaultValue={el.role}
                                                 id={'role'}
-                                                validate={{ require: 'Require fill' }}
+                                                validate={{ required: 'Require fill' }}
                                                 options={roleList}
                                             />
                                             : <span>
@@ -207,7 +207,7 @@ const ManagerUser = () => {
                                                 errors={errors}
                                                 defaultValue={el.isBlocked}
                                                 id={'isBlocked'}
-                                                validate={{ require: 'Require fill' }}
+                                                validate={{ required: 'Require fill' }}
                                                 options={blockStatus}
                                             />
                                             : <span>

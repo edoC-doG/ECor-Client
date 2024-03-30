@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { apiGetProducts } from 'apis/product';
-import { apiGetCategories } from 'apis/app';
 import CustomSlider from '../../Utils/common/CustomSlider';
 import { getNewProducts } from 'store/products/asyncAction';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,7 +21,7 @@ const BestSeller = () => {
     const [activeTab, setActiveTab] = useState(1)
     const [products, setProducts] = useState(null)
     const dispatch = useDispatch()
-    const { newProducts } = useSelector(state => state.products)
+    const { newProducts } = useSelector(state => state.product)
     const fetchProducts = async () => {
         const res = await apiGetProducts({ sort: '-sold' })
         if (res?.success) {
@@ -30,10 +29,10 @@ const BestSeller = () => {
             setProducts(res.products)
         }
     }
-    // useEffect(() => {
-    //      fetchProducts()
-    //      dispatch(getNewProducts())
-    // }, [])
+    useEffect(() => {
+        // fetchProducts()
+        // dispatch(getNewProducts())
+    }, [])
     useEffect(() => {
         if (activeTab === 1) {
             setProducts(bestSeller)

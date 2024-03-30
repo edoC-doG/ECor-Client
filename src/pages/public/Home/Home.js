@@ -6,7 +6,7 @@ import icons from 'utils/icons';
 const { IoIosArrowForward } = icons
 
 const Home = () => {
-    const { newProducts } = useSelector(state => state.products)
+    const { newProducts } = useSelector(state => state.product)
     const { categories } = useSelector(state => state.app)
     return (
         <>
@@ -27,9 +27,10 @@ const Home = () => {
                 <h3 className='text-[20px] uppercase font-semibold py-[15px] border-b-4 border-main'>
                     New Arrivals
                 </h3>
-                <div className='w-full mx-[-10px]'>
+                <div className='w-full mt-4 mx-[-10px]'>
                     <CustomSlider
                         products={newProducts}
+
                     />
                 </div>
             </div>

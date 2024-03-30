@@ -17,14 +17,12 @@ const userConfig = {
 export const store = configureStore({
   reducer: {
     app: appSlice,
-    products: productSlice,
+    product: productSlice,
     user: persistReducer(userConfig, userSlice)
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoreActions: [FLUSH, REGISTER, REHYDRATE, PAUSE, PURGE, PERSIST]
-      },
+      serializableCheck: false,
     }),
 });
 

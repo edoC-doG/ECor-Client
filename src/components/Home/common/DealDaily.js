@@ -1,7 +1,7 @@
 import React, { useEffect, useState, memo } from 'react'
 import icons from 'utils/icons'
 import { apiGetProducts } from 'apis/product'
-import { formatMoney, renderStarFromNumber, secondsToHms } from 'utils/helper'
+import { formatMoney, formatPrice, renderStarFromNumber, secondsToHms } from 'utils/helper'
 import { CountDown } from '../..'
 import moment from 'moment'
 
@@ -15,9 +15,14 @@ const DealDaily = () => {
     const [expireTime, setExpire] = useState(false)
 
     const fetchDealDaily = async () => {
-        const res = await apiGetProducts({ limit: 1, page: Math.round(Math.random() * 10), totalRatings: 5 })
+        const res = await apiGetProducts({
+            limit: 1,
+            page: Math.round(Math.random() * 10),
+            // totalRatings: 5
+        })
         if (res.success) {
             setDealDaily(res.products[0])
+            console.log(dealDaily)
             const today = `${moment().format('MM/DD/YYYY')} 7:00:00`
             const second = new Date(today).getTime() - new Date().getTime() + 24 * 3600 * 1000
             const number = secondsToHms(second)
@@ -32,9 +37,9 @@ const DealDaily = () => {
     }
     useEffect(() => {
         idInterval && clearInterval(idInterval)
-        //         setTimeout(() => {
-        //   fetchDealDaily()
-        //         }, 5000)
+        setTimeout(() => {
+            fetchDealDaily()
+        }, 5000)
     }, [expireTime])
     useEffect(() => {
         idInterval = setInterval(() => {
@@ -75,8 +80,7 @@ const DealDaily = () => {
                 <span className='flex h-4'>{renderStarFromNumber(dealDaily?.totalRatings, 20)?.map((el, idx) => (
                     <span key={idx}>{el}</span>
                 ))}</span>
-                {/* <span>{`${formatMoney(dealDaily?.price)} VNĐ`}</span> */}
-                <span>100,000 VNĐ</span>
+                <span>{`${formatMoney(formatPrice((dealDaily?.price)))} VNĐ`}</span>
             </div>
             <div className='px-4 mt-8'>
                 <div className='flex justify-center gap-2 items-center mb-4'>

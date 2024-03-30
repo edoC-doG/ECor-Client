@@ -19,8 +19,8 @@ const Select = ({
                 </label>}
             <select className={clsx('form-select', fullWidth && 'w-full', style)} id={id} {...register(id, validate)}>
                 <option value="">---CHOOSE----</option>
-                {options?.map(el => (
-                    <option value={el.code}>
+                {options?.map((el, idx) => (
+                    <option key={idx} value={el.code}>
                         {el.value}
                     </option>
                 ))}

@@ -18,6 +18,7 @@ export const productSlice = createSlice({
         builder.addCase(action.getNewProducts.fulfilled, (state, action) => {
             state.isLoading = false;
             state.newProducts = action.payload;
+            console.log(action.payload)
         })
         builder.addCase(action.getNewProducts.rejected, (state, action) => {
             state.isLoading = false;
@@ -26,6 +27,6 @@ export const productSlice = createSlice({
     }
 })
 
-// export const { } = productSlice.actions
+export const { } = productSlice.actions
 
 export default productSlice.reducer

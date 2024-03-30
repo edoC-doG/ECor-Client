@@ -35,12 +35,12 @@
 }
 
 .image-slider button.slick-next {
-  right: 80px;
+  right: 20px;
   z-index: 10;
   top: 55px;
 }
 .image-slider button.slick-prev {
-  left: 20px;
+  left: 0px;
   top: 55px;
   z-index: 10;
 }
