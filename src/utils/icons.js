@@ -7,7 +7,7 @@ import {
     BsReplyFill
 } from 'react-icons/bs'
 import { FaUserCircle, FaTty } from 'react-icons/fa'
-import { IoMenu } from 'react-icons/io5'
+import { IoMenu, IoTrashBinOutline } from 'react-icons/io5'
 import { IoIosArrowForward } from 'react-icons/io'
 import { BiDotsHorizontalRounded } from 'react-icons/bi'
 import { HiHome } from 'react-icons/hi2'
@@ -46,6 +46,7 @@ const icons = {
     LiaSitemapSolid,
     AiOutlineCaretDown,
     AiOutlineCaretUp,
+    IoTrashBinOutline,
 }
 
 export default icons

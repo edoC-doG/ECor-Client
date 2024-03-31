@@ -34,6 +34,7 @@ export {
     PagiItem,
     Pagination,
     Loading,
-    Select
+    Select,
+    MarkDownEditor
 } from './Utils'
 

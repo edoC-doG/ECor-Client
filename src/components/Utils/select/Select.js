@@ -12,12 +12,12 @@ const Select = ({
     fullWidth,
 }) => {
     return (
-        <div className='flex flex-col gap-2'>
+        <div className={clsx('flex flex-col gap-2', style)}>
             {label &&
                 <label htmlFor={id}>
                     {label}
                 </label>}
-            <select className={clsx('form-select', fullWidth && 'w-full', style)} id={id} {...register(id, validate)}>
+            <select className={clsx('form-select max-h-[42px]', fullWidth && 'w-full', style)} id={id} {...register(id, validate)}>
                 <option value="">---CHOOSE----</option>
                 {options?.map((el, idx) => (
                     <option key={idx} value={el.code}>
