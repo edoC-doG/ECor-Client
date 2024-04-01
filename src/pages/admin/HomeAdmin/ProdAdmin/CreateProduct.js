@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { getBase64, validate } from 'utils/helper';
 import { toast } from 'react-toastify';
 import icons from 'utils/icons';
+import { apiCreateProd } from 'apis';
 
 const { IoTrashBinOutline } = icons
 
@@ -54,10 +55,22 @@ const CreateProduct = () => {
         handlePreviewImages(watch('images'))
     }, [watch('images')])
 
-    const handleCreateProd = (data) => {
+    const handleCreateProd = async (data) => {
         const invalids = validate(payload, setInvalidFields)
         if (invalids === 0) {
             if (data.category) data.category = categories?.find(el => el._id === data.category)?.title
+            const finalPayload = { ...data, ...payload }
+
+            const formData = new FormData()
+            for (let i of Object.entries(finalPayload)) formData.append(i[0], i[1])
+            if (finalPayload.thumb) formData.append('thumb', finalPayload.thumb[0])
+            if (finalPayload.images) {
+                for (let image of finalPayload.images) formData.append('images', image)
+            }
+            const res = await apiCreateProd(formData)
+            console.log(finalPayload)
+            console.log(formData)
+            console.log(res)
         }
     }
     return (

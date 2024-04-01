@@ -16,3 +16,9 @@ export const apiRatings = (params) => axios({
     method: 'put',
     params
 })
+
+export const apiCreateProd = (data) => axios({
+    url: '/product/',
+    method: 'post',
+    data
+})

@@ -7,6 +7,7 @@ import ReactImageMagnify from 'react-image-magnify';
 import { formatMoney, formatPrice, renderStarFromNumber } from 'utils/helper'
 import { toast } from 'react-toastify';
 import { prodExtraInf } from 'utils/contants'
+import DOMPurify from 'dompurify'
 const settings = {
     dots: true,
     isFinite: true,
@@ -122,7 +123,12 @@ const DetailProduct = () => {
                         <span className='text-sm text-main italic'>{`Sold: ${product?.sold} pieces`}</span>
                     </div>
                     <ul className='list-square text-sm text-gray-600 pl-3'>
-                        {product?.description?.map(el => (<li className='leading-4' key={el}>{el}</li>))}
+                        {product?.description?.length > 1 && product?.description?.map(el => (<li className='leading-4' key={el}>{el}</li>))}
+                        {product?.description?.length === 1 &&
+                            <div
+                                className='text-sm '
+                                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product?.description[0]) }}>
+                            </div>}
                     </ul>
                     <div className='flex flex-col gap-8'>
                         <div className='flex items-center gap-4'>
