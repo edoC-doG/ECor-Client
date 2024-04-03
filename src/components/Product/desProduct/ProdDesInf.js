@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 
 const ProdDesInf = ({ ratings, total, nameProduct, pid, reRender }) => {
     const [activeTab, setActiveTab] = useState(1)
-    const { isLoggedIn } = useSelector(state => state.app)
+    const { isLoggedIn } = useSelector(state => state.user)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -35,7 +35,7 @@ const ProdDesInf = ({ ratings, total, nameProduct, pid, reRender }) => {
                 showCancelButton: true,
                 title: 'Opps',
             }).then((rs) => {
-                if (rs.isConfirmed) navigate(`${path.LOGIN}`)
+                if (rs.isConfirmed) navigate(`/${path.LOGIN}`)
 
             })
         } else {
@@ -98,15 +98,15 @@ const ProdDesInf = ({ ratings, total, nameProduct, pid, reRender }) => {
                     </Button>
                 </div>
                 <div className='flex flex-col gap-4'>
-                    {/* {ratings?.map(el => ( */}
-                    <Comment
-                    // key={el._id}
-                    // total={el.star}
-                    // updateAt={el.updateAt}
-                    // comment={el.comment}
-                    // name = {`${el.postedBy?.lastName} ${el.postedBy?.firstName}`}
-                    />
-                    {/* ))} */}
+                    {ratings?.map(el => (
+                        <Comment
+                            key={el._id}
+                            total={el.star}
+                            updateAt={el.updateAt}
+                            comment={el.comment}
+                            name={`${el.postedBy?.lastName} ${el.postedBy?.firstName}`}
+                        />
+                    ))}
                 </div>
             </div>
         </div>

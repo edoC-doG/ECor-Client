@@ -25,7 +25,7 @@ const PagiItem = ({ children }) => {
                     !Number(children) && 'items-end pb-2 ',
                     Number(children) && 'items-center hover:rounded-full hover:bg-blue-300',
                     +params.get('page') === +children && 'rounded-full bg-blue-500',
-                    +params.get('page') === +children && +children === 1 && 'rounded-full bg-blue-500')}
+                    !+params.get('page') && +children === 1 && 'rounded-full bg-blue-500')}
         >
             {children}
         </button>

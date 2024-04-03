@@ -1,16 +1,18 @@
-import { Button, InputForm, MarkDownEditor, Select } from 'components'
+import { Button, InputForm, Loading, MarkDownEditor, Select } from 'components'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getBase64, validate } from 'utils/helper';
 import { toast } from 'react-toastify';
 import icons from 'utils/icons';
 import { apiCreateProd } from 'apis';
+import { showModal } from 'store/app/appSlice';
 
 const { IoTrashBinOutline } = icons
 
 const CreateProduct = () => {
     const { categories } = useSelector(state => state.app)
+    const dispatch = useDispatch()
     const { register, formState: { errors }, reset, handleSubmit, watch } = useForm()
     const [payload, setPayload] = useState({
         description: ''
@@ -67,10 +69,17 @@ const CreateProduct = () => {
             if (finalPayload.images) {
                 for (let image of finalPayload.images) formData.append('images', image)
             }
+            dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }))
             const res = await apiCreateProd(formData)
-            console.log(finalPayload)
-            console.log(formData)
-            console.log(res)
+            dispatch(showModal({ isShowModal: false, modalChildren: null }))
+            if (res.success) {
+                toast.success(res.mes)
+                reset()
+                setPayload({
+                    thumb: '',
+                    image: []
+                })
+            } else toast.error(res.mes)
         }
     }
     return (
@@ -164,47 +173,53 @@ const CreateProduct = () => {
                         invalidFields={invalidFields}
                         setInvalidFields={setInvalidFields}
                     />
-                    <div className='flex flex-col gap-2 mt-8'>
-                        <label className='font-semibold' htmlFor="thumb">Upload Thumb</label>
-                        <input
-                            id='thumb'
-                            {...register('thumb', { required: 'Need fill this field' })}
-                            type="file"
-                        />
-                        {errors['thumb'] && <small className='text-xs text-red-500'>{errors['thumb']?.message}</small>}
+                    <div className='flex flex-col'>
+                        <div
+                            onClick={e => e.stopPropagation()}
+                            className='flex flex-col gap-2 mt-8'>
+                            <label className='font-semibold' htmlFor="thumb">Upload Thumb</label>
+                            <input
+                                className='cursor-pointer max-w-[400px]'
+                                id='thumb'
+                                {...register('thumb', { required: 'Need fill this field' })}
+                                type="file"
+                            />
+                            {errors['thumb'] && <small className='text-xs text-red-500'>{errors['thumb']?.message}</small>}
+                        </div>
+                        {preview.thumb && <div className='my-4'>
+                            <img src={preview.thumb} alt="thumb" className='w-[200px] object-contain' />
+                        </div>}
+                        <div className=' flex flex-col gap-2 my-4'>
+                            <label className='font-semibold' htmlFor="images">Upload Images</label>
+                            <input
+                                className='cursor-pointer max-w-[400px]'
+                                id='images'
+                                multiple
+                                {...register('images', { required: 'Need fill this field' })}
+                                type="file"
+                            />
+                            {errors['images'] && <small className='text-xs text-red-500'>{errors['images']?.message}</small>}
+                        </div>
+                        {preview.images.length > 0 && <div className='flex flex-wrap w-full gap-3 my-4 '>
+                            {preview.images?.map((el, idx) => (
+                                <div
+                                    key={idx}
+                                    onMouseEnter={() => setHoverElm(el.name)}
+                                    onMouseLeave={() => setHoverElm(null)}
+                                    className='w-fit relative'
+                                >
+                                    <img src={el.path} alt="products" className='w-[200px] object-contain' />
+                                    {hoverElm === el.name &&
+                                        <div
+                                            className='absolute flex items-center justify-center animate-scale-up-center inset-0 bg-overlay cursor-pointer'
+                                            onClick={() => handleRemoveImg(el.name)}
+                                        >
+                                            <IoTrashBinOutline size={24} color='white' />
+                                        </div>}
+                                </div>
+                            ))}
+                        </div>}
                     </div>
-                    {preview.thumb && <div className='my-4'>
-                        <img src={preview.thumb} alt="thumb" className='w-[200px] object-contain' />
-                    </div>}
-                    <div className='flex flex-col gap-2 mt-8'>
-                        <label className='font-semibold' htmlFor="images">Upload Images</label>
-                        <input
-                            id='images'
-                            multiple
-                            {...register('images', { required: 'Need fill this field' })}
-                            type="file"
-                        />
-                        {errors['images'] && <small className='text-xs text-red-500'>{errors['images']?.message}</small>}
-                    </div>
-                    {preview.images.length > 0 && <div className='flex flex-wrap w-full gap-3 my-4 '>
-                        {preview.images?.map((el, idx) => (
-                            <div
-                                key={idx}
-                                onMouseEnter={() => setHoverElm(el.name)}
-                                onMouseLeave={() => setHoverElm(null)}
-                                className='w-fit relative'
-                            >
-                                <img src={el.path} alt="products" className='w-[200px] object-contain' />
-                                {hoverElm === el.name &&
-                                    <div
-                                        className='absolute flex items-center justify-center animate-scale-up-center inset-0 bg-overlay cursor-pointer'
-                                        onClick={() => handleRemoveImg(el.name)}
-                                    >
-                                        <IoTrashBinOutline size={24} color='white' />
-                                    </div>}
-                            </div>
-                        ))}
-                    </div>}
                     <Button type='submit'>Create New Product</Button>
                 </form>
             </div>

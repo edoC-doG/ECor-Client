@@ -38,12 +38,8 @@ const DetailProduct = () => {
     }
 
     const reRender = useCallback(() => {
-        setUpdate(!update)
+        setUpdate(prev => !prev)
     }, [])
-
-    useEffect(() => {
-        if (pid) fetchProductData()
-    }, [update])
     useEffect(() => {
         if (pid) {
             fetchProductData()
@@ -70,6 +66,10 @@ const DetailProduct = () => {
         if (flag === 'minus') setQuantity(prev => +prev - 1)
         if (flag === 'plus') setQuantity(prev => +prev + 1)
     }, [quantity])
+
+    useEffect(() => {
+        if (pid) fetchProductData()
+    }, [update])
     return (
         <div className='w-full'>
             <div className='h-[81px] flex items-center justify-center bg-gray-100'>
@@ -80,10 +80,10 @@ const DetailProduct = () => {
             </div>
             <div className='w-main m-auto mt-4 flex'>
                 <div className='flex-col flex gap-4 w-2/5'>
-                    <div className='h-[458px] w-[458px] border object-cover overflow-hidden'>
+                    <div className='h-[458px] w-[458px] flex items-center border object-cover overflow-hidden'>
                         <ReactImageMagnify {...{
                             smallImage: {
-                                alt: 'Wristwatch by Ted Baker London',
+                                alt: '',
                                 isFluidWidth: true,
                                 src: currentImg
                             },
@@ -126,7 +126,7 @@ const DetailProduct = () => {
                         {product?.description?.length > 1 && product?.description?.map(el => (<li className='leading-4' key={el}>{el}</li>))}
                         {product?.description?.length === 1 &&
                             <div
-                                className='text-sm '
+                                className='text-sm line-clamp-[10] mb-8'
                                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(product?.description[0]) }}>
                             </div>}
                     </ul>
@@ -157,10 +157,10 @@ const DetailProduct = () => {
             </div>
             <div className='w-main m-auto mt-8'>
                 <ProdDesInf
-                    total={(product?.totalRatings || 5)}
+                    total={product?.totalRatings}
                     ratings={product?.ratings || []}
-                    nameProduct={product?.title || 'Nan'}
-                    pid={product?._id}
+                    nameProduct={product?.title}
+                    pid={pid}
                     reRender={reRender}
                 />
             </div>

@@ -20,7 +20,7 @@ const ProductPage = () => {
     const { category } = useParams()
     const [sort, setSort] = useState('')
     const fetchProdByCate = async (queries) => {
-        const res = await apiGetProducts(queries)
+        const res = await apiGetProducts({ ...queries, limit: process.env.REACT_APP_LIMIT })
         if (res.success) setProducts(res)
     }
     useEffect(() => {
@@ -71,7 +71,7 @@ const ProductPage = () => {
     return (
         <div className='w-full' >
             <div className='w-full h-[81px] flex items-center justify-center bg-gray-100' >
-                <div className='w-full'>
+                <div className='w-main'>
                     <h3 className='font-semibold uppercase'>{category}</h3>
                     <BreadCrumbs category={category} />
                 </div>

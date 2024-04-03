@@ -93,3 +93,7 @@ input {
 code {
   white-space: initial;
 }
+
+.my-aut0 {
+  margin: auto;
+}
