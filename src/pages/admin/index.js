@@ -3,6 +3,7 @@ export {
     DashBoard,
     ManagerOrder,
     ManagerProduct,
+    UpdateProduct,
     ManagerUser,
     CreateProduct
 } from './HomeAdmin'
