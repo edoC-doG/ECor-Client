@@ -51,7 +51,11 @@ const ManagerProduct = () => {
     return (
         <div className={clsx('w-full flex flex-col gap-4 p-4 relative')}>
             {updateProd && <div className='absolute inset-0 min-h-screen bg-gray-100 z-50'>
-                <UpdateProduct updateProd={updateProd} render={render} />
+                <UpdateProduct
+                    updateProd={updateProd}
+                    render={render}
+                    setUpdateProd={setUpdateProd}
+                />
             </div>}
             <div className='h-[69px] w-full'></div>
             <div className='p-4 border-b w-full bg-gray-100 flex justify-between items-center fixed top-0'>
@@ -103,21 +107,12 @@ const ManagerProduct = () => {
                             <td className='text-center py-2'>{moment(el?.createdAt).format('DD/MM/YYYY')}</td>
                             <td className='py-2 px-4'>
                                 <div className=' flex justify-center items-center gap-2'>
-                                    {updateProd?._id === el._id
-                                        ? <Button
-                                            // handleOnClick={() => setEditElm(null)}
-                                            style={`px-4 py-2 my-2 rounded-md text-white bg-blue-700 font-semibold hover:bg-blue-300`}
-                                        >
-                                            Back
-                                        </Button>
-                                        : <Button
-                                            handleOnClick={() => setUpdateProd(el)}
-                                            style={`px-4 py-2 my-2 rounded-md text-white bg-blue-700 font-semibold hover:bg-blue-300`}
-                                        >
-                                            Edit
-                                        </Button>
-                                    }
-
+                                    <Button
+                                        handleOnClick={() => setUpdateProd(el)}
+                                        style={`px-4 py-2 my-2 rounded-md text-white bg-blue-700 font-semibold hover:bg-blue-300`}
+                                    >
+                                        Edit
+                                    </Button>
                                     <Button
                                     // handleOnClick={() => handleDelete(el._id)}
                                     >

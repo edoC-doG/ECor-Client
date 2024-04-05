@@ -3,7 +3,7 @@ import Slider from "react-slick"
 import { ProductItem } from '../../product';
 
 const settings = {
-    dots: true,
+    dots: false,
     isFinite: true,
     speed: 500,
     slidesToShow: 3,

@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { prodExtraInf } from 'utils/contants'
 import DOMPurify from 'dompurify'
 const settings = {
-    dots: true,
+    dots: false,
     isFinite: true,
     speed: 500,
     slidesToShow: 3,

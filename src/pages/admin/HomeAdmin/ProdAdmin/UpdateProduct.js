@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 const { IoTrashBinOutline } = icons
 
-const UpdateProduct = ({ updateProd, render }) => {
+const UpdateProduct = ({ updateProd, render, setUpdateProd }) => {
     const { categories } = useSelector(state => state.app)
     const dispatch = useDispatch()
     const { register, formState: { errors }, reset, handleSubmit, watch } = useForm()
@@ -82,8 +82,13 @@ const UpdateProduct = ({ updateProd, render }) => {
     return (
         <div className={clsx('w-full flex flex-col gap-4 p-4 relative')}>
             <div className='h-[69px] w-full'></div>
-            <div className='p-4 border-b w-full bg-gray-100 flex justify-between items-center fixed top-0'>
+            <div className='p-4 border-b bg-gray-100 flex justify-between items-center fixed top-0 right-0 left-[327px]'>
                 <h2 className='text-3xl font-bold tracking-tight'>Update products</h2>
+                <Button
+                    handleOnClick={() => setUpdateProd(null)}
+                >
+                    Cancel
+                </Button>
             </div>
             <div className='p-4'>
                 <form onSubmit={handleSubmit(handleCreateProd)}>
