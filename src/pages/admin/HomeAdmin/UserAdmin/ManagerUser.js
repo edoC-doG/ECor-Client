@@ -1,6 +1,6 @@
 import { apiDeleteUser, apiGetUser, apiUpdateUser } from 'apis'
 import React, { useCallback, useEffect, useState } from 'react'
-import { blockStatus, roleList } from 'utils/contants'
+import { blockStatus, roleList } from 'utils/contantsFiel'
 import moment from 'moment'
 import useDebounce from 'hooks/useDebounce'
 import { Button, InputField, InputForm, Pagination, Select } from 'components'

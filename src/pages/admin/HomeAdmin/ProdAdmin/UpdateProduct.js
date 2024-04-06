@@ -1,13 +1,13 @@
 import clsx from 'clsx'
-import { Button, InputForm, MarkDownEditor, Select } from 'components'
+import { Button, InputForm, Loading, MarkDownEditor, Select } from 'components'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form'
 import { getBase64, validate } from 'utils/helper';
-import icons from 'utils/icons';
 import { toast } from 'react-toastify';
+import { apiUpdateProd } from 'apis';
+import { showModal } from 'store/app/appSlice';
 
-const { IoTrashBinOutline } = icons
 
 const UpdateProduct = ({ updateProd, render, setUpdateProd }) => {
     const { categories } = useSelector(state => state.app)
@@ -20,9 +20,7 @@ const UpdateProduct = ({ updateProd, render, setUpdateProd }) => {
         thumb: null,
         images: []
     })
-    const [hoverElm, setHoverElm] = useState(null)
     const [invalidFields, setInvalidFields] = useState([])
-
     const changeValue = useCallback((e) => {
         setPayload(e)
     }, [payload])
@@ -31,12 +29,6 @@ const UpdateProduct = ({ updateProd, render, setUpdateProd }) => {
         const toBase64 = await getBase64(file)
         setPreview(prev => ({ ...prev, thumb: toBase64 }))
     }
-    const handleRemoveImg = (name) => {
-        const files = [...watch('images')]
-        const imagePath = files?.filter(el => el.name !== name)
-        reset({ images: imagePath })
-        if (preview?.images.some(el => el.name === name)) setPreview(prev => ({ ...prev, images: prev?.images?.filter(el => el.name !== name) }))
-    }
     const handlePreviewImages = async (files) => {
         const imagesPreview = []
         for (let file of files) {
@@ -44,13 +36,12 @@ const UpdateProduct = ({ updateProd, render, setUpdateProd }) => {
                 toast.warning('Files not supported')
             }
             const base64 = await getBase64(file)
-            imagesPreview.push({
-                name: file.name, path: base64
-            })
+            imagesPreview.push(
+                base64
+            )
         }
         setPreview(prev => ({ ...prev, images: imagesPreview }))
     }
-
     useEffect(() => {
         reset({
             title: updateProd?.title || '',
@@ -65,19 +56,40 @@ const UpdateProduct = ({ updateProd, render, setUpdateProd }) => {
             thumb: updateProd?.thumb || '',
             images: updateProd?.images || []
         })
-    }, [])
+    }, [updateProd])
 
     useEffect(() => {
-        if (watch('thumb'))
+        if (watch('thumb') instanceof FileList && watch('thumb').length > 0)
             handleBase64(watch('thumb')[0])
     }, [watch('thumb')])
+
     useEffect(() => {
-        if (watch('images'))
+        if (watch('images') instanceof FileList && watch('images').length > 0)
             handlePreviewImages(watch('images'))
     }, [watch('images')])
 
-    const handleCreateProd = async (data) => {
+    const handleUpdateProd = async (data) => {
+        const invalids = validate(payload, setInvalidFields)
+        if (invalids === 0) {
+            if (data.category) data.category = categories?.find(el => el.title === data.category)?.title
+            const finalPayload = { ...data, ...payload }
+            finalPayload.thumb = data?.thumb?.length === 0 ? preview.thumb : data.thumb[0]
+            const formData = new FormData()
+            for (let i of Object.entries(finalPayload)) formData.append(i[0], i[1])
+            finalPayload.images = data?.image?.length === 0 ? preview.images : data.images
+            for (let image of finalPayload.images) formData.append('images', image)
 
+            dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }))
+
+            const res = await apiUpdateProd(formData, updateProd._id)
+
+            dispatch(showModal({ isShowModal: false, modalChildren: null }))
+            if (res.success) {
+                render()
+                setUpdateProd(null)
+                toast.success(res?.mes)
+            } else toast.error(res?.mes)
+        }
     }
     return (
         <div className={clsx('w-full flex flex-col gap-4 p-4 relative')}>
@@ -91,7 +103,7 @@ const UpdateProduct = ({ updateProd, render, setUpdateProd }) => {
                 </Button>
             </div>
             <div className='p-4'>
-                <form onSubmit={handleSubmit(handleCreateProd)}>
+                <form onSubmit={handleSubmit(handleUpdateProd)}>
                     <InputForm
                         label='Name Product'
                         register={register}
@@ -179,13 +191,12 @@ const UpdateProduct = ({ updateProd, render, setUpdateProd }) => {
                     />
                     <div className='flex flex-col'>
                         <div
-                            onClick={e => e.stopPropagation()}
                             className='flex flex-col gap-2 mt-8'>
                             <label className='font-semibold' htmlFor="thumb">Upload Thumb</label>
                             <input
                                 className='cursor-pointer max-w-[400px]'
                                 id='thumb'
-                                {...register('thumb', { required: 'Need fill this field' })}
+                                {...register('thumb')}
                                 type="file"
                             />
                             {errors['thumb'] && <small className='text-xs text-red-500'>{errors['thumb']?.message}</small>}
@@ -199,7 +210,7 @@ const UpdateProduct = ({ updateProd, render, setUpdateProd }) => {
                                 className='cursor-pointer max-w-[400px]'
                                 id='images'
                                 multiple
-                                {...register('images', { required: 'Need fill this field' })}
+                                {...register('images')}
                                 type="file"
                             />
                             {errors['images'] && <small className='text-xs text-red-500'>{errors['images']?.message}</small>}
@@ -208,18 +219,9 @@ const UpdateProduct = ({ updateProd, render, setUpdateProd }) => {
                             {preview.images?.map((el, idx) => (
                                 <div
                                     key={idx}
-                                    onMouseEnter={() => setHoverElm(el.name)}
-                                    onMouseLeave={() => setHoverElm(null)}
                                     className='w-fit relative'
                                 >
                                     <img src={el} alt="products" className='w-[200px] object-contain' />
-                                    {hoverElm === el.name &&
-                                        <div
-                                            className='absolute flex items-center justify-center animate-scale-up-center inset-0 bg-overlay cursor-pointer'
-                                            onClick={() => handleRemoveImg(el.name)}
-                                        >
-                                            <IoTrashBinOutline size={24} color='white' />
-                                        </div>}
                                 </div>
                             ))}
                         </div>}

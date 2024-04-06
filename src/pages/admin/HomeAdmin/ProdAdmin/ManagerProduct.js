@@ -1,4 +1,4 @@
-import { apiGetProducts } from 'apis'
+import { apiDeleteProd, apiGetProducts } from 'apis'
 import clsx from 'clsx'
 import { Button, InputForm, Pagination } from 'components'
 import useDebounce from 'hooks/useDebounce'
@@ -8,6 +8,8 @@ import { useForm } from 'react-hook-form'
 import { useSearchParams, useNavigate, useLocation, createSearchParams } from 'react-router-dom'
 import { formatMoney, formatPrice } from 'utils/helper'
 import UpdateProduct from './UpdateProduct'
+import Swal from 'sweetalert2'
+import { toast } from 'react-toastify'
 
 
 
@@ -31,6 +33,22 @@ const ManagerProduct = () => {
             setProduct(res.products)
             setCounts(res.counts)
         }
+    }
+
+    const handleDelete = (pid) => {
+        Swal.fire({
+            title: 'Are you sure',
+            text: 'Are you sure remove this product',
+            icon: 'error',
+            showCancelButton: true
+        }).then(async (rs) => {
+            if (rs.isConfirmed) {
+                const res = await apiDeleteProd(pid)
+                if (res.success) toast.success(res.mes)
+                else toast.error(res.mes)
+                render()
+            }
+        })
     }
 
     const queryDebounce = useDebounce(watch('q'), 800)
@@ -114,7 +132,7 @@ const ManagerProduct = () => {
                                         Edit
                                     </Button>
                                     <Button
-                                    // handleOnClick={() => handleDelete(el._id)}
+                                        handleOnClick={() => handleDelete(el._id)}
                                     >
                                         Delete
                                     </Button>

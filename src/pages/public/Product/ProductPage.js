@@ -4,7 +4,7 @@ import { BreadCrumbs, InputSelect, ProductItem, SearchItem, Pagination } from 'c
 import { apiGetProducts } from 'apis';
 import Masonry from 'react-masonry-css'
 import { toast } from 'react-toastify';
-import { sorts } from 'utils/contants';
+import { sorts } from 'utils/contantsFiel';
 const breakpointColumnsObj = {
     default: 4,
     1100: 3,

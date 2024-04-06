@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react'
 import icons from 'utils/icons';
-import { colors } from 'utils/contants';
+import { colors } from 'utils/contantsFiel';
 import { createSearchParams, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { apiGetProducts } from 'apis';
 import useDebounce from 'hooks/useDebounce';

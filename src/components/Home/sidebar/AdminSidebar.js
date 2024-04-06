@@ -1,6 +1,6 @@
 import React, { Fragment, memo, useCallback, useState } from 'react'
 import logo from 'assets/logo.png'
-import { sideBarAdmin } from 'utils/contants'
+import { sideBarAdmin } from 'utils/contantsFiel'
 import { Link, NavLink } from 'react-router-dom'
 import clsx from 'clsx'
 import icons from 'utils/icons'

@@ -22,7 +22,9 @@ const MarkDownEditor = ({ label, value, changeValue, name, invalidFields, setInv
                         'removeformat | help',
                     content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                 }}
-                onFocus={() => setInvalidFields && setInvalidFields([])}
+                onFocus={() => {
+                    setInvalidFields && setInvalidFields([])
+                }}
                 onChange={e => changeValue(prev => ({ ...prev, [name]: e.target.getContent() }))}
             />
             {invalidFields?.some(el => el.name === name) &&

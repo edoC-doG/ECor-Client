@@ -6,7 +6,7 @@ import Slider from "react-slick"
 import ReactImageMagnify from 'react-image-magnify';
 import { formatMoney, formatPrice, renderStarFromNumber } from 'utils/helper'
 import { toast } from 'react-toastify';
-import { prodExtraInf } from 'utils/contants'
+import { prodExtraInf } from 'utils/contantsFiel'
 import DOMPurify from 'dompurify'
 const settings = {
     dots: false,

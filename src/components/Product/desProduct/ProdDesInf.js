@@ -1,5 +1,5 @@
 import React, { memo, useState, useCallback } from 'react'
-import { tabsProd } from 'utils/contants'
+import { tabsProd } from 'utils/contantsFiel'
 import { Button, Comment, RatingBar, VoteOption } from '../..'
 import { renderStarFromNumber, validate } from 'utils/helper'
 import { apiRatings } from 'apis'
